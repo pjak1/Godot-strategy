@@ -1,9 +1,11 @@
+# EnemyLogic.gd
 extends Area2D
 
-class_name Enemy
+class_name EnemyLogic
+
 const VALID_ENEMY_TYPES = ["normal", "desert", "plane", "bomber_plane"]
 
-@export var type: String = "desert"
+@export var type: String = VALID_ENEMY_TYPES[0]
 @export var speed: float = 100.0
 @export var max_turn_speed = deg_to_rad(90)
 @export var max_health: int = 100
@@ -13,21 +15,19 @@ var current_health: int
 var path_points: Array[Vector2] = []
 var current_point := 0
 
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+# Signal to notify graphics about health changes
+signal health_updated(new_health: int, max_health: int)
+# Signal to notify graphics about enemy death
+signal died
 
 func _ready():
 	if not VALID_ENEMY_TYPES.has(type):
 		push_error("Neplatný typ nepřítele: '%s'" % type)
 		return
+
 	current_health = max_health
-	
-	if type:
-		sprite.animation = type
-		sprite.frame = 0
-		sprite.play()
-	else:
-		print("Animace '", type, "' neexistuje!")
-	
+	emit_health_update() # Initial health update
+
 	if path_points.size() > 0:
 		var min_dist = INF
 		var nearest_index = 0
@@ -40,7 +40,6 @@ func _ready():
 
 func _process(delta):
 	if enable_movement and path_points.size() > 0:
-		print(path_points.size())
 		move_along_path(delta)
 
 func rotate_towards_target(delta, target_pos: Vector2):
@@ -52,7 +51,7 @@ func rotate_towards_target(delta, target_pos: Vector2):
 
 func move_along_path(delta):
 	if current_point >= path_points.size():
-		queue_free()
+		die() # Enemy reached end of path
 		return
 
 	var target = path_points[current_point]
@@ -61,7 +60,7 @@ func move_along_path(delta):
 	if distance_to_target < 5.0:
 		current_point += 1
 		if current_point >= path_points.size():
-			queue_free()
+			die() # Enemy reached end of path
 			return
 		target = path_points[current_point]
 
@@ -71,15 +70,17 @@ func move_along_path(delta):
 	var forward = Vector2(cos(rotation), sin(rotation))
 	global_position += forward * speed * delta
 
-
 func take_damage(amount: int):
 	current_health -= amount
+	emit_health_update()
+
 	if current_health <= 0:
 		die()
 
 func die():
-	queue_free()
-	
+	emit_signal("died") # Notify graphics that the enemy died
+	queue_free() # Remove the logic node
+
 func set_path_points(points: Array[Vector2]):
 	path_points = points
 	if path_points.size() > 0:
@@ -91,3 +92,6 @@ func set_path_points(points: Array[Vector2]):
 				min_dist = dist
 				nearest_index = i
 		current_point = nearest_index
+
+func emit_health_update():
+	emit_signal("health_updated", current_health, max_health)

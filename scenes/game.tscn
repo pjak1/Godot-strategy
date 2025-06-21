@@ -43,9 +43,9 @@ zoom = Vector2(0.4, 0.4)
 
 [node name="Spawnpoint" parent="." instance=ExtResource("3_lbhrr")]
 position = Vector2(-1701, 1258)
-enemy_scene = ExtResource("4_lbhrr")
+enemy_logic_scene = ExtResource("4_lbhrr")
 
 [node name="Spawnpoint2" parent="." instance=ExtResource("3_lbhrr")]
 position = Vector2(-2247, -459)
-enemy_scene = ExtResource("4_lbhrr")
+enemy_logic_scene = ExtResource("4_lbhrr")
 enemy_type = "desert"

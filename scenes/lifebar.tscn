@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1ntity5jhx1v"]
+
+[ext_resource type="Script" uid="uid://sfmgp65lslg8" path="res://scripts/lifebar.gd" id="2_0jpj3"]
+
+[node name="ProgressBar" type="ProgressBar"]
+offset_right = 4.0
+offset_bottom = 27.0
+show_percentage = false
+script = ExtResource("2_0jpj3")
