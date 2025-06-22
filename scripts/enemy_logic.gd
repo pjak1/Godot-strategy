@@ -3,9 +3,9 @@ extends Area2D
 
 class_name EnemyLogic
 
-const VALID_ENEMY_TYPES = ["normal", "desert", "plane", "bomber_plane"]
+var valid_enemy_types = ["normal", "desert"]
 
-@export var type: String = VALID_ENEMY_TYPES[0]
+@export var type: String = valid_enemy_types[0]
 @export var speed: float = 100.0
 @export var max_turn_speed = deg_to_rad(90)
 @export var max_health: int = 100
@@ -15,14 +15,12 @@ var current_health: int
 var path_points: Array[Vector2] = []
 var current_point := 0
 
-# Signal to notify graphics about health changes
 signal health_updated(new_health: int, max_health: int)
-# Signal to notify graphics about enemy death
 signal died
 
 func _ready():
-	if not VALID_ENEMY_TYPES.has(type):
-		push_error("Neplatný typ nepřítele: '%s'" % type)
+	if not valid_enemy_types.has(type):
+		push_error("Invalid enemy type: '%s'" % type)
 		return
 
 	current_health = max_health

@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cha80n4nys568"]
+
+[ext_resource type="Script" uid="uid://dp6yr4k6547l6" path="res://scripts/tower_inventory.gd" id="1_e2s50"]
+[ext_resource type="Texture2D" uid="uid://dt3jhwpomjg3o" path="res://assets/PNG/Default size/towerDefense_tile250.png" id="2_hrsc1"]
+
+[node name="TowerInventory" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 28.0
+offset_bottom = 20.0
+script = ExtResource("1_e2s50")
+default_texture = ExtResource("2_hrsc1")
+sprite_path = "\"Barrel/Sprite2D\""
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = -39.0
+offset_top = -18.0
+offset_right = 44.0
+offset_bottom = 11.0

@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://bj7bvanf1l8ob"]
+
+[ext_resource type="Script" uid="uid://4eyysrn6cv8f" path="res://scripts/inventory_item.gd" id="1_u4rwp"]
+
+[node name="InventoryItem" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_u4rwp")
+
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
