@@ -8,7 +8,7 @@ class_name TurretLogic
 @export var angle_offset_deg: float = 87.0
 @export var turret_graphics_path: NodePath = "TurretGraphics"
 @export var barrel_node_name: String = "Barrel"
-@export var targeted_group: String = "Tower"
+@export var targeted_group: String = "Enemy"
 
 var fire_cooldown: float = 0.0
 var current_target: Node2D = null
