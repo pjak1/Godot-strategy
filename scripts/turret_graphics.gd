@@ -1,30 +1,32 @@
-extends Node2D
+extends EntityGraphics
 
 class_name TurretGraphics
 
-@onready var turret_base: Node2D = $"."
+@onready var turret_base: Node2D = $"." 
 @onready var turret_barrel: Node2D = $Barrel
-@onready var flash: AnimatedSprite2D = $Barrel/Flash
-@onready var flash2: AnimatedSprite2D = $Barrel/Flash2
-
 @onready var turret_logic: TurretLogic = get_parent()
 
 @export var rotation_speed: float = 5.0
 @export var angle_offset_deg: float = 87.0
-@export var show_range_debug: bool = true
+@export var show_range_debug: bool = false
+
+# Automatically collected flash sprite nodes
+var flash_sprites: Array[AnimatedSprite2D] = []
 
 func _ready():
-	flash.visible = false
-	flash2.visible = false
-		
+	# Find all AnimatedSprite2D children in Barrel
+	for child in turret_barrel.get_children():
+		if child is AnimatedSprite2D:
+			var sprite := child as AnimatedSprite2D
+			sprite.visible = false
+			sprite.connect("animation_finished", func(): _on_flash_finished(sprite))
+			flash_sprites.append(sprite)
+
 	if turret_logic and turret_logic is TurretLogic:
 		turret_logic.target_angle_changed.connect(_on_target_angle_changed)
-		turret_logic.shot.connect(_on_shot)
+		turret_logic.delt_damage.connect(_on_shot)
 	else:
-		push_error("TurretGraphics: Rodič není TurretLogic nebo je null!")
-
-	flash.connect("animation_finished", func(): _on_flash_finished(flash))
-	flash2.connect("animation_finished", func(): _on_flash_finished(flash2))
+		push_error("TurretGraphics: Parent is not TurretLogic or is null!")
 
 func _process(delta):
 	queue_redraw()
@@ -34,12 +36,10 @@ func _on_target_angle_changed(new_angle: float):
 		turret_barrel.rotation = lerp_angle(turret_barrel.rotation, new_angle, rotation_speed * get_process_delta_time())
 
 func _on_shot(target_position: Vector2):
-	flash.visible = true
-	flash2.visible = true
-	flash.frame = 0
-	flash2.frame = 0
-	flash.play("shoot")
-	flash2.play("shoot")
+	for flash in flash_sprites:
+		flash.visible = true
+		flash.frame = 0
+		flash.play("shoot")
 
 func _on_flash_finished(flash_to_hide: AnimatedSprite2D):
 	flash_to_hide.visible = false

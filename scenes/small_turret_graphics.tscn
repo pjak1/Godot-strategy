@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://kclesjystjmr"]
+
+[ext_resource type="Script" uid="uid://50k18oghh4p7" path="res://scripts/turret_graphics.gd" id="1_1acue"]
+[ext_resource type="TileSet" uid="uid://cm6ji3vk54vlq" path="res://assets/Tilesheet/game.tres" id="2_qh2ei"]
+[ext_resource type="Texture2D" uid="uid://dnuo587nfm0rn" path="res://assets/Tilesheet/towerDefense_tilesheet.png" id="3_hcebn"]
+[ext_resource type="Texture2D" uid="uid://cg0yvwarwbwf6" path="res://assets/Tilesheet/towerDefense_tilesheet@2.png" id="4_jv7ju"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_el7wl"]
+atlas = ExtResource("3_hcebn")
+region = Rect2(1226.83, 644.09, 42.3348, 56.5657)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_485p4"]
+atlas = SubResource("AtlasTexture_el7wl")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6fjxm"]
+atlas = ExtResource("4_jv7ju")
+region = Rect2(2432, 1534, 128, 118)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dirdf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6fjxm")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 5.0
+}]
+
+[node name="SmallTurretGraphics" type="Node2D"]
+script = ExtResource("1_1acue")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+z_index = 2
+position = Vector2(-105, 6.5)
+tile_map_data = PackedByteArray(0, 0, 6, 0, 255, 255, 0, 0, 76, 0, 28, 0, 0, 0)
+tile_set = ExtResource("2_qh2ei")
+
+[node name="Barrel" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Barrel"]
+z_index = 3
+position = Vector2(-2, 1)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_485p4")
+offset = Vector2(0, -10)
+
+[node name="Flash" type="AnimatedSprite2D" parent="Barrel"]
+visible = false
+position = Vector2(-1, -116)
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_dirdf")
+animation = &"shoot"

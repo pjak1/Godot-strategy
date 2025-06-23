@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cncthteas063t"]
+
+[ext_resource type="Script" uid="uid://dp8ycujqquxu7" path="res://scripts/movable_entity.gd" id="1_f412j"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_f412j")

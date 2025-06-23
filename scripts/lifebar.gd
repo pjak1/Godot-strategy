@@ -2,11 +2,12 @@ extends ProgressBar
 
 @export var length: int = 100
 @export var width: int = 15
+@export var max_health: int = 100
 
-var current_health: int = 100
-var max_health: int = 100
+var current_health: int
 
 func _ready():
+	current_health = max_health
 	# Set the size of the ProgressBar control
 	size = Vector2(length, width)
 	# Initialize the visual state of the health bar

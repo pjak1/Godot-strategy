@@ -10,11 +10,17 @@ offset_right = 28.0
 offset_bottom = 20.0
 script = ExtResource("1_e2s50")
 default_texture = ExtResource("2_hrsc1")
-sprite_path = "\"Barrel/Sprite2D\""
+sprite_path = "\"TurretGraphics/Barrel/Sprite2D\""
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = -39.0
-offset_top = -18.0
-offset_right = 44.0
-offset_bottom = 11.0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 0

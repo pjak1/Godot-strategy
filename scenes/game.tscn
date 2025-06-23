@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://c6koscqfkij2a"]
+[gd_scene load_steps=11 format=4 uid="uid://c6koscqfkij2a"]
 
 [ext_resource type="Script" uid="uid://cmyxdtdofbris" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bum5i44oov6lc" path="res://scenes/turret.tscn" id="2_lnu2h"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://38327qepamfd" path="res://scenes/enemy.tscn" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cha80n4nys568" path="res://scenes/tower_inventory.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://bj7bvanf1l8ob" path="res://scenes/inventory_item.tscn" id="7_u5sy4"]
+[ext_resource type="PackedScene" uid="uid://duwedlfq7l1el" path="res://scenes/small_turret.tscn" id="8_gee14"]
 
 [sub_resource type="Curve2D" id="Curve2D_lnu2h"]
 _data = {
@@ -49,9 +50,11 @@ enemy_type = "desert"
 [node name="TowerContainer" type="Node2D" parent="."]
 
 [node name="TowerInventory" parent="." instance=ExtResource("6_p57ef")]
-offset_left = -1730.0
-offset_top = -1198.0
-offset_right = -1702.0
-offset_bottom = -1178.0
+offset_left = -1793.0
+offset_top = -1077.0
+offset_right = -1765.0
+offset_bottom = -1057.0
+scale = Vector2(2.19999, 2.19999)
 inventory_item_scene = ExtResource("7_u5sy4")
-available_towers = Array[PackedScene]([ExtResource("2_lnu2h"), ExtResource("2_lnu2h")])
+available_towers = Array[PackedScene]([ExtResource("2_lnu2h"), ExtResource("8_gee14")])
+sprite_path = "TurretGraphics/Barrel"
