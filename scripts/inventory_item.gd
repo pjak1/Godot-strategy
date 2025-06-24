@@ -5,23 +5,28 @@ signal pressed(item_data)
 @export var texture_normal: Texture2D
 @export var texture_hover: Texture2D
 @export var texture_pressed: Texture2D
-@export var minimal_item_size : Vector2 = Vector2(64, 64)
+@export var minimal_item_size: Vector2 = Vector2(64, 64)
 
 @onready var button: TextureButton = $TextureButton
+@onready var money: HBoxContainer = $MoneyGraphics
 
 var item_data: Variant
 var hovered := false
+var cached_bounds: Rect2 = Rect2(Vector2.ZERO, minimal_item_size)
 
 func _ready():
-	_initialize_size()
+	_initialize_layout()
 	_apply_textures()
 	_configure_button()
 	_connect_signals()
 	queue_redraw()
 
-func _initialize_size() -> void:
+func _initialize_layout() -> void:
 	custom_minimum_size = minimal_item_size
+	size = minimal_item_size
 	button.size = minimal_item_size
+	money.position = Vector2(10, 70)
+	money.z_index = 1
 
 func _apply_textures() -> void:
 	if texture_normal:
@@ -37,18 +42,9 @@ func _configure_button() -> void:
 	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 
 func _connect_signals() -> void:
-	button.connect("pressed", _on_pressed)
-	button.connect("mouse_entered", _on_mouse_entered)
-	button.connect("mouse_exited", _on_mouse_exited)
-
-func _draw():
-	var border_color = Color.YELLOW if hovered else Color(1, 1, 1)
-	var border_width = 2.0
-	
-	# Use fixed size defined by minimal_item_size for border
-	var border_rect = Rect2(Vector2.ZERO, minimal_item_size)
-	
-	draw_rect(border_rect, border_color, false, border_width)
+	button.pressed.connect(_on_pressed)
+	button.mouse_entered.connect(_on_mouse_entered)
+	button.mouse_exited.connect(_on_mouse_exited)
 
 func _on_pressed():
 	emit_signal("pressed", item_data)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bj7bvanf1l8ob"]
+[gd_scene load_steps=3 format=3 uid="uid://bj7bvanf1l8ob"]
 
 [ext_resource type="Script" uid="uid://4eyysrn6cv8f" path="res://scripts/inventory_item.gd" id="1_u4rwp"]
+[ext_resource type="PackedScene" uid="uid://cklk72vmetfhd" path="res://scenes/money_graphics.tscn" id="2_letey"]
 
 [node name="InventoryItem" type="Control"]
 layout_mode = 3
@@ -13,3 +14,8 @@ script = ExtResource("1_u4rwp")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="MoneyGraphics" parent="." instance=ExtResource("2_letey")]
+layout_mode = 0
+offset_right = 53.0
+scale = Vector2(0.48, 0.48)

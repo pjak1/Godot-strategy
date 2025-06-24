@@ -61,7 +61,7 @@ available_towers = Array[PackedScene]([ExtResource("2_lnu2h"), ExtResource("8_ge
 sprite_path = "TurretGraphics/Barrel"
 
 [node name="Money" parent="." instance=ExtResource("9_0tnpc")]
-offset_left = -1867.0
-offset_top = -1015.0
-offset_right = -1827.0
-offset_bottom = -975.0
+offset_left = -1687.0
+offset_top = -940.0
+offset_right = -1647.0
+offset_bottom = -900.0

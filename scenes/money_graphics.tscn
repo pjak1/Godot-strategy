@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://cklk72vmetfhd"]
+
+[ext_resource type="Texture2D" uid="uid://cg0yvwarwbwf6" path="res://assets/Tilesheet/towerDefense_tilesheet@2.png" id="1_ocobm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocobm"]
+atlas = ExtResource("1_ocobm")
+region = Rect2(2478.16, 1454.46, 35.9087, 34.9513)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ocobm"]
+font_size = 24
+
+[node name="MoneyGraphics" type="HBoxContainer"]
+z_index = 100
+offset_right = 49.0
+offset_bottom = 40.0
+
+[node name="MoneyIcon" type="TextureRect" parent="."]
+layout_mode = 2
+texture = SubResource("AtlasTexture_ocobm")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_ocobm")

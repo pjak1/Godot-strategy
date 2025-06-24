@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dt3jhwpomjg3o" path="res://assets/PNG/Default size/towerDefense_tile250.png" id="2_hrsc1"]
 
 [node name="TowerInventory" type="Control"]
+z_index = 100
 layout_mode = 3
 anchors_preset = 0
 offset_right = 28.0
