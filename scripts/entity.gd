@@ -13,7 +13,6 @@ signal died
 
 func _ready():
 	current_health = max_health
-	emit_health_update() # Initial health update
 	
 func take_damage(amount: int):
 	current_health -= amount

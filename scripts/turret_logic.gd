@@ -8,7 +8,7 @@ class_name TurretLogic
 @export var angle_offset_deg: float = 87.0
 @export var turret_graphics_path: NodePath = "TurretGraphics"
 @export var barrel_node_name: String = "Barrel"
-@export var targeted_group: String = "Enemy"
+@export var targeted_groups: Array[String] = ["Enemy"]
 
 var fire_cooldown: float = 0.0
 var current_target: Node2D = null
@@ -19,6 +19,7 @@ signal target_angle_changed(new_angle: float)
 var turret_graphics: Node = null
 
 func _ready():
+	super._ready()
 	fire_cooldown = 0.0
 	turret_graphics = get_node_or_null(turret_graphics_path)
 
@@ -50,15 +51,16 @@ func _process(delta):
 func find_nearest_enemy() -> Node2D:
 	var nearest_enemy: Node2D = null
 	var shortest_distance := INF
-
-	for enemy in get_tree().get_nodes_in_group(targeted_group):
-		if enemy == self:
-			continue  # Přeskočíme sami sebe
-		if enemy and enemy is Node2D:
-			var distance = global_position.distance_to(enemy.global_position)
-			if distance < shortest_distance and distance <= range:
-				shortest_distance = distance
-				nearest_enemy = enemy
+	
+	for group_name in targeted_groups:
+		for enemy in get_tree().get_nodes_in_group(group_name):
+			if enemy == self:
+				continue
+			if enemy and enemy is Node2D:
+				var distance = global_position.distance_to(enemy.global_position)
+				if distance < shortest_distance and distance <= range:
+					shortest_distance = distance
+					nearest_enemy = enemy
 
 	return nearest_enemy
 	

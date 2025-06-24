@@ -10,8 +10,7 @@ var path_points: Array[Vector2] = []
 var current_point := 0
 
 func _ready():
-	current_health = max_health
-	emit_health_update() # Initial health update
+	super._ready()
 
 	if path_points.size() > 0:
 		var min_dist = INF
