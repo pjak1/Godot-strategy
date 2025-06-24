@@ -12,9 +12,11 @@ class_name TurretGraphics
 
 # Automatically collected flash sprite nodes
 var flash_sprites: Array[AnimatedSprite2D] = []
+
 func _ready():
 	life_bar_position = position + Vector2(-50,-90)
 	super._ready()
+	
 	# Find all AnimatedSprite2D children in Barrel
 	for child in turret_barrel.get_children():
 		if child is AnimatedSprite2D:

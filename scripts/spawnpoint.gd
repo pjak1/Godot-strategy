@@ -2,9 +2,9 @@ extends Node2D
 
 class_name Spawner
 
-@export var enemy_logic_scene: PackedScene # Přetáhni EnemyLogic.tscn (nebo Enemy.tscn s EnemyLogic skriptem) sem v editoru
-@export var spawn_interval: float = 5.0    # sekundy mezi spawnem
-@export var max_enemies: int = 10        # kolik nepřátel může spawnout celkem, 0 = neomezeno
+@export var enemy_logic_scene: PackedScene
+@export var spawn_interval: float = 5.0
+@export var max_enemies: int = 10 
 @export_enum("normal", "desert", "plane", "bomber_plane")
 
 var enemy_type: String = "normal"
@@ -15,55 +15,71 @@ var spawn_timer := 0.0
 signal enemy_spawned
 
 func _process(delta):
-	if max_enemies > 0 and enemies_spawned >= max_enemies:
-		return # limit splněn
+	if can_spawn():
+		update_spawn_timer(delta)
 
+func can_spawn() -> bool:
+	return max_enemies <= 0 or enemies_spawned < max_enemies
+
+func update_spawn_timer(delta: float) -> void:
 	spawn_timer += delta
+	
 	if spawn_timer >= spawn_interval:
 		spawn_timer = 0.0
 		spawn_enemy()
 
-func assign_closest_path(enemy_logic_instance: EnemyLogic):
-	var all_paths = get_tree().get_nodes_in_group("Path")
-	var closest_path_points: Array[Vector2] = []
-	var closest_distance := INF
-
-	for path in all_paths:
-		if not path is Path2D:
-			continue
-		var curve: Curve2D = path.curve
-		if curve.get_point_count() == 0:
-			continue
-
-		var first_point: Vector2 = curve.get_point_position(0) + path.global_position
-		var distance: float = enemy_logic_instance.global_position.distance_to(first_point)
-
-		if distance < closest_distance:
-			closest_distance = distance
-			closest_path_points.clear()
-			for i in range(curve.get_point_count()):
-				var point = curve.get_point_position(i) + path.global_position
-				closest_path_points.append(point)
-
-	if closest_path_points.size() > 0:
-		enemy_logic_instance.set_path_points(closest_path_points)
-		enemy_logic_instance.enable_movement = true
-	else:
-		push_warning("Nepřítel %s nemá přiřazenou žádnou cestu!" % enemy_logic_instance.name)
-
-func spawn_enemy():
+func spawn_enemy() -> void:
 	if not enemy_logic_scene:
-		push_error("Nezadána scéna Enemy (logika) v spawnpointu! Ujisti se, že jsi přetáhl/a scénu obsahující EnemyLogic.")
+		push_error("Enemy logic scene not set!")
 		return
 
-	var enemy_logic_instance: EnemyLogic = enemy_logic_scene.instantiate()
-	enemy_logic_instance.type = enemy_type # Nastavení typu nepřítele
-	enemy_logic_instance.global_position = global_position # Umístění nepřítele na pozici spawnpointu
+	var enemy = instantiate_enemy()
+	
+	assign_closest_path_to_enemy(enemy)
+	add_enemy_to_scene(enemy)
+	register_enemy(enemy)
 
-	assign_closest_path(enemy_logic_instance) # Přiřazení cesty
+func instantiate_enemy() -> EnemyLogic:
+	var enemy: EnemyLogic = enemy_logic_scene.instantiate()
+	
+	enemy.type = enemy_type
+	enemy.global_position = global_position
+	return enemy
 
-	get_parent().add_child(enemy_logic_instance) # Přidání instance do scény
-	enemy_logic_instance.add_to_group("Enemy") # Přidání do skupiny "Enemy" (pro případné globální reference)
-	emit_signal("enemy_spawned", enemy_logic_instance)
+func assign_closest_path_to_enemy(enemy: EnemyLogic) -> void:
+	var closest_path = find_closest_path_points(enemy.global_position)
+	
+	if closest_path.size() > 0:
+		enemy.set_path_points(closest_path)
+		enemy.enable_movement = true
+	else:
+		push_warning("Enemy %s does not have assigned path!" % enemy.name)
 
+func find_closest_path_points(position: Vector2) -> Array[Vector2]:
+	var closest_points: Array[Vector2] = []
+	var shortest_distance := INF
+
+	for path in get_tree().get_nodes_in_group("Path"):
+		if path is Path2D:
+			var curve = path.curve
+			if curve.get_point_count() == 0:
+				continue
+
+			var first_point = path.global_position + curve.get_point_position(0)
+			var distance = position.distance_to(first_point)
+
+			if distance < shortest_distance:
+				shortest_distance = distance
+				closest_points.clear()
+				for i in range(curve.get_point_count()):
+					closest_points.append(path.global_position + curve.get_point_position(i))
+
+	return closest_points
+
+func add_enemy_to_scene(enemy: EnemyLogic) -> void:
+	get_parent().add_child(enemy)
+	enemy.add_to_group("Enemy")
+
+func register_enemy(enemy: EnemyLogic) -> void:
 	enemies_spawned += 1
+	emit_signal("enemy_spawned", enemy)

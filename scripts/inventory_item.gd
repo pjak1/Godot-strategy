@@ -7,10 +7,10 @@ signal pressed(item_data)
 @export var texture_pressed: Texture2D
 @export var minimal_item_size : Vector2 = Vector2(64, 64)
 
+@onready var button: TextureButton = $TextureButton
+
 var item_data: Variant
 var hovered := false
-
-@onready var button: TextureButton = $TextureButton
 
 func _ready():
 	_initialize_size()

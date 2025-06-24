@@ -16,5 +16,4 @@ func spend_money(amount: int) -> bool:
 		emit_signal("money_changed", money_amount)
 		return true
 	else:
-		print("Not enough money!")
 		return false
