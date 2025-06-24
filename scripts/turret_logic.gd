@@ -9,6 +9,7 @@ class_name TurretLogic
 @export var turret_graphics_path: NodePath = "TurretGraphics"
 @export var barrel_node_name: String = "Barrel"
 @export var targeted_groups: Array[String] = ["Enemy"]
+@export var cost: int = 100
 
 var fire_cooldown: float = 0.0
 var current_target: Node2D = null

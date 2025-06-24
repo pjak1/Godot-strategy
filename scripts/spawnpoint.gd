@@ -1,13 +1,18 @@
 extends Node2D
 
+class_name Spawner
+
 @export var enemy_logic_scene: PackedScene # Přetáhni EnemyLogic.tscn (nebo Enemy.tscn s EnemyLogic skriptem) sem v editoru
 @export var spawn_interval: float = 5.0    # sekundy mezi spawnem
 @export var max_enemies: int = 10        # kolik nepřátel může spawnout celkem, 0 = neomezeno
 @export_enum("normal", "desert", "plane", "bomber_plane")
+
 var enemy_type: String = "normal"
 
 var enemies_spawned: int = 0
 var spawn_timer := 0.0
+
+signal enemy_spawned
 
 func _process(delta):
 	if max_enemies > 0 and enemies_spawned >= max_enemies:
@@ -59,5 +64,6 @@ func spawn_enemy():
 
 	get_parent().add_child(enemy_logic_instance) # Přidání instance do scény
 	enemy_logic_instance.add_to_group("Enemy") # Přidání do skupiny "Enemy" (pro případné globální reference)
+	emit_signal("enemy_spawned", enemy_logic_instance)
 
 	enemies_spawned += 1

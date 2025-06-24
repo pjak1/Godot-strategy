@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c14b1umbu7itw"]
+
+[ext_resource type="Script" uid="uid://dw8u7fhybobla" path="res://scripts/money_logic.gd" id="1_6q7pm"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_6q7pm")

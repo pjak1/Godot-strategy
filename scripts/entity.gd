@@ -29,8 +29,8 @@ func deal_damage(target):
 	emit_signal("delt_damage", target.global_position if target else global_position)
 	
 func die():
-	emit_signal("died") # Notify graphics that the enemy died
-	queue_free() # Remove the logic node
+	emit_signal("died", self)
+	queue_free()
 
 func emit_health_update():
 	emit_signal("health_updated", current_health, max_health)

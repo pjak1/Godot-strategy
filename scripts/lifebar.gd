@@ -6,7 +6,7 @@ extends ProgressBar
 
 var current_health: int
 
-func _ready():
+func _ready() -> void:
 	current_health = max_health
 	# Set the size of the ProgressBar control
 	size = Vector2(length, width)

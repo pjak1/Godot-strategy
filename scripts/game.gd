@@ -3,6 +3,7 @@ extends Node2D
 @onready var tower_inventory := $TowerInventory
 @onready var tower_container := $TowerContainer
 @onready var tilemap := $TileMapLayer
+@onready var money := $Money
 
 # Constants
 const PATH_BLOCK_RADIUS: float = 180.0
@@ -14,11 +15,16 @@ const COLOR_VALID: Color = Color(1, 1, 1, tower_to_place_ALPHA)
 const COLOR_INVALID: Color = Color(1, 0.3, 0.3, tower_to_place_ALPHA_INVALID)
 const COLOR_CONFIRMED: Color = Color(1, 1, 1, 1)
 
+const ENEMY_KILLED_REWARD: int = 100
+
 # Variables
 var selected_tower_scene: PackedScene
 var tower_to_place_scene: PackedScene = null
 var tower_to_place_instance: Node2D = null
 var tower_instances: Dictionary = {}
+
+var enemies: Dictionary = {}
+var spawnpoints: Dictionary = {}
 
 var paths_points: Array = []
 
@@ -27,9 +33,19 @@ signal tower_selected(tower_scene: PackedScene)
 func _ready():
 	connect_inventory_signal()
 	load_paths_points()
+	load_spawnpoints()
 
 func connect_inventory_signal():
 	tower_inventory.connect("tower_selected", _on_tower_selected)
+
+func connect_enemy_spawned_signal(spawnpoint: Spawner):
+	spawnpoint.connect("enemy_spawned", _on_enemy_spawned)
+	
+func load_spawnpoints():
+	spawnpoints.clear()
+	for node in get_tree().get_nodes_in_group("SpawnPoint"):
+		spawnpoints[node.get_instance_id()] = node
+		node.connect("enemy_spawned", _on_enemy_spawned)
 
 func load_paths_points():
 	paths_points.clear()
@@ -76,7 +92,9 @@ func confirm_tower_placement():
 	# připojit signál a uložit do dictionary
 	tower_to_place_instance.connect("died", Callable(self, "_on_tower_died").bind(tower_to_place_instance))
 	tower_instances[tower_to_place_instance.get_instance_id()] = tower_to_place_instance
-
+	
+	money.spend_money(tower_to_place_instance.cost)
+		
 	tower_to_place_instance = null
 	tower_to_place_scene = null
 	set_process_input(false)
@@ -116,14 +134,30 @@ func _on_tower_selected(tower_scene: PackedScene):
 func place_tower(tower_scene: PackedScene):
 	tower_to_place_scene = tower_scene
 	tower_to_place_instance = tower_to_place_scene.instantiate()
-	tower_to_place_instance.enable_targeting = false
-	tower_to_place_instance.modulate = COLOR_VALID
-	tower_to_place_instance.set_range_debug(true)
-	add_child(tower_to_place_instance)
-	tower_to_place_instance.global_position = get_global_mouse_position()
-	set_process_input(true)
+	
+	if money.money_amount >= tower_to_place_instance.cost:
+		tower_to_place_instance.enable_targeting = false
+		tower_to_place_instance.modulate = COLOR_VALID
+		tower_to_place_instance.set_range_debug(true)
+		add_child(tower_to_place_instance)
+		tower_to_place_instance.global_position = get_global_mouse_position()
+		set_process_input(true)
+	else:
+		tower_to_place_instance.queue_free()
+		tower_to_place_instance = null
+		tower_to_place_scene = null
 
 func _on_tower_died(tower: Node2D):
 	var id = tower.get_instance_id()
 	if tower_instances.has(id):
 		tower_instances.erase(id)
+
+func _on_enemy_spawned(enemy: EnemyLogic):
+	enemies[enemy.get_instance_id()] = enemy
+	enemy.connect("died", _on_enemy_died)
+	
+func _on_enemy_died(enemy: EnemyLogic):
+	var id = enemy.get_instance_id()
+	if enemies.has(id):
+		enemies.erase(id)
+		money.add_money(ENEMY_KILLED_REWARD)
