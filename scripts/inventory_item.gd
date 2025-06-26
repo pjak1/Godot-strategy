@@ -22,7 +22,6 @@ func _ready():
 	_apply_textures()
 	_configure_button()
 	_connect_signals()
-	money_label.text = str(cost)
 	queue_redraw()
 	
 func _initialize_layout() -> void:
@@ -31,6 +30,7 @@ func _initialize_layout() -> void:
 	button.size = minimal_item_size
 	money.position = Vector2(38, 60)
 	money.z_index = 1
+	money_label.text = str(cost)
 
 func _apply_textures() -> void:
 	if texture_normal:

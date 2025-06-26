@@ -37,7 +37,7 @@ curve = SubResource("Curve2D_lbhrr")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 scale = Vector2(15.52, 4.6)
-zoom = Vector2(0.4, 0.4)
+zoom = Vector2(0.5, 0.5)
 
 [node name="Spawnpoint" parent="." groups=["SpawnPoint"] instance=ExtResource("3_lbhrr")]
 position = Vector2(-1701, 1258)
@@ -61,7 +61,7 @@ available_towers = Array[PackedScene]([ExtResource("2_lnu2h"), ExtResource("8_ge
 sprite_path = "TurretGraphics/Barrel"
 
 [node name="Money" parent="." instance=ExtResource("9_0tnpc")]
-offset_left = -1687.0
+offset_left = -1658.0
 offset_top = -940.0
-offset_right = -1647.0
+offset_right = -1618.0
 offset_bottom = -900.0
