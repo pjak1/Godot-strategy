@@ -112,7 +112,7 @@ func point_to_segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
 	return p.distance_to(projection)
 
 func is_position_buildable(pos: Vector2) -> bool:
-	return not is_near_path(pos) and not is_tower_too_close(pos)
+	return not is_outside_of_bounds(pos) and not is_near_path(pos) and not is_tower_too_close(pos)
 
 func is_near_path(pos: Vector2) -> bool:
 	for points in paths_points:
@@ -127,6 +127,20 @@ func is_tower_too_close(pos: Vector2) -> bool:
 		if tower.global_position.distance_to(pos) < TOWER_BLOCK_RADIUS:
 			return true
 	return false
+
+func is_outside_of_bounds(pos: Vector2) -> bool:
+	# Získáme hranice mapy
+	var used_rect: Rect2 = tilemap.get_used_rect()
+	var cell_size: Vector2 = tilemap.tile_set.tile_size
+	
+	# Spočítáme globální hranice mapy
+	var top_left = tilemap.map_to_local(used_rect.position)
+	var bottom_right = tilemap.map_to_local(used_rect.position + used_rect.size)
+
+	var bounds_rect = Rect2(top_left, bottom_right - top_left)
+	
+	return not bounds_rect.has_point(pos)
+	
 
 func _on_tower_selected(tower_scene: PackedScene):
 	place_tower(tower_scene)

@@ -13,6 +13,8 @@ font_size = 24
 z_index = 100
 offset_right = 49.0
 offset_bottom = 40.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="MoneyIcon" type="TextureRect" parent="."]
 layout_mode = 2

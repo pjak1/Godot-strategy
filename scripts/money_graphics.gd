@@ -10,5 +10,8 @@ func _ready() -> void:
 	money_logic.money_changed.connect(_on_money_changed)
 	_on_money_changed(money_logic.money_amount)
 
-func _on_money_changed(new_amount: int) -> void:
+func set_money(new_amount):
 	label.text = str(new_amount)
+
+func _on_money_changed(new_amount: int) -> void:
+	set_money(new_amount)

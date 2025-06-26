@@ -51,13 +51,13 @@ enemy_type = "desert"
 [node name="TowerContainer" type="Node2D" parent="."]
 
 [node name="TowerInventory" parent="." instance=ExtResource("6_p57ef")]
-offset_left = 1692.0
-offset_top = -1048.0
-offset_right = 1720.0
-offset_bottom = -1028.0
+offset_left = -18.0
+offset_top = -1051.0
+offset_right = 10.0
+offset_bottom = -1031.0
 scale = Vector2(2.19999, 2.19999)
 inventory_item_scene = ExtResource("7_u5sy4")
-available_towers = Array[PackedScene]([ExtResource("2_lnu2h"), ExtResource("8_gee14")])
+available_towers = Array[PackedScene]([ExtResource("2_lnu2h"), ExtResource("8_gee14"), ExtResource("2_lnu2h")])
 sprite_path = "TurretGraphics/Barrel"
 
 [node name="Money" parent="." instance=ExtResource("9_0tnpc")]

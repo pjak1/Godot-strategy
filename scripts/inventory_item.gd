@@ -9,23 +9,27 @@ signal pressed(item_data)
 
 @onready var button: TextureButton = $TextureButton
 @onready var money: HBoxContainer = $MoneyGraphics
+@onready var money_label: Label = $MoneyGraphics/Label
+@onready var panel: Panel = $Panel
 
 var item_data: Variant
 var hovered := false
 var cached_bounds: Rect2 = Rect2(Vector2.ZERO, minimal_item_size)
+var cost = 0
 
 func _ready():
 	_initialize_layout()
 	_apply_textures()
 	_configure_button()
 	_connect_signals()
+	money_label.text = str(cost)
 	queue_redraw()
-
+	
 func _initialize_layout() -> void:
 	custom_minimum_size = minimal_item_size
 	size = minimal_item_size
 	button.size = minimal_item_size
-	money.position = Vector2(10, 70)
+	money.position = Vector2(38, 60)
 	money.z_index = 1
 
 func _apply_textures() -> void:
@@ -51,8 +55,21 @@ func _on_pressed():
 
 func _on_mouse_entered():
 	hovered = true
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(1, 1, 1, 0.1)  # Světlejší pozadí
+
+	style.border_color = Color(1, 1, 1, 0.4)
+	style.set_border_width(SIDE_LEFT, 2)
+	style.set_border_width(SIDE_TOP, 2)
+	style.set_border_width(SIDE_RIGHT, 2)
+	style.set_border_width(SIDE_BOTTOM, 2)
+
+	panel.add_theme_stylebox_override("panel", style)
+
 	queue_redraw()
 
 func _on_mouse_exited():
 	hovered = false
+	panel.remove_theme_stylebox_override("panel")
 	queue_redraw()

@@ -35,6 +35,7 @@ func populate_inventory():
 
 		item.texture_normal = texture_to_use
 		item.item_data = tower_scene
+		item.cost = tower_instance.cost
 		item.connect("pressed", Callable(self, "_on_tower_selected"))
 		container.add_child(item)
 
