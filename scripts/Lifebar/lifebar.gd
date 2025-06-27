@@ -52,10 +52,12 @@ func set_fill_color(color: Color) -> void:
 	
 	# Do the same for the "fg" (foreground) stylebox for consistency
 	var fg_stylebox = get_theme_stylebox("fg", "ProgressBar")
+	
 	if fg_stylebox == null or not fg_stylebox is StyleBoxFlat:
 		fg_stylebox = StyleBoxFlat.new()
 	else:
 		fg_stylebox = fg_stylebox.duplicate()
+		
 	fg_stylebox.bg_color = color
 	add_theme_stylebox_override("fg", fg_stylebox)
 

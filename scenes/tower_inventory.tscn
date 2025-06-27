@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cha80n4nys568"]
 
-[ext_resource type="Script" uid="uid://dp6yr4k6547l6" path="res://scripts/tower_inventory.gd" id="1_e2s50"]
+[ext_resource type="Script" uid="uid://dp6yr4k6547l6" path="res://scripts/Inventory/tower_inventory.gd" id="1_e2s50"]
 [ext_resource type="Texture2D" uid="uid://dt3jhwpomjg3o" path="res://assets/PNG/Default size/towerDefense_tile250.png" id="2_hrsc1"]
 
 [node name="TowerInventory" type="Control"]

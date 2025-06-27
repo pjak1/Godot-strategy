@@ -35,8 +35,10 @@ func _initialize_layout() -> void:
 func _apply_textures() -> void:
 	if texture_normal:
 		button.texture_normal = texture_normal
+		
 	if texture_hover:
 		button.texture_hover = texture_hover
+		
 	if texture_pressed:
 		button.texture_pressed = texture_pressed
 
@@ -58,8 +60,8 @@ func _on_mouse_entered():
 
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(1, 1, 1, 0.1)  # Světlejší pozadí
-
 	style.border_color = Color(1, 1, 1, 0.4)
+	
 	style.set_border_width(SIDE_LEFT, 2)
 	style.set_border_width(SIDE_TOP, 2)
 	style.set_border_width(SIDE_RIGHT, 2)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://c6koscqfkij2a"]
+[gd_scene load_steps=16 format=4 uid="uid://c6koscqfkij2a"]
 
 [ext_resource type="Script" uid="uid://cmyxdtdofbris" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bum5i44oov6lc" path="res://scenes/turret.tscn" id="2_lnu2h"]
@@ -9,6 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://bj7bvanf1l8ob" path="res://scenes/inventory_item.tscn" id="7_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://duwedlfq7l1el" path="res://scenes/small_turret.tscn" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://0i50wrimpkts" path="res://scenes/money.tscn" id="9_0tnpc"]
+[ext_resource type="Script" uid="uid://buh6s2wqtepye" path="res://scripts/Managers/tower_placement_manager.gd" id="10_kvuet"]
+[ext_resource type="Script" uid="uid://bjll68ha667wc" path="res://scripts/Managers/Enemy_manager.gd" id="11_trtic"]
+[ext_resource type="Script" uid="uid://dlm0jq8lsinqc" path="res://scripts/Managers/tower_manager.gd" id="12_ir15t"]
+[ext_resource type="Script" uid="uid://dk012yfrb7rlr" path="res://scripts/Managers/path_manager.gd" id="13_ca42v"]
 
 [sub_resource type="Curve2D" id="Curve2D_lnu2h"]
 _data = {
@@ -48,20 +52,33 @@ position = Vector2(-2247, -459)
 enemy_logic_scene = ExtResource("4_lbhrr")
 enemy_type = "desert"
 
-[node name="TowerContainer" type="Node2D" parent="."]
-
 [node name="TowerInventory" parent="." instance=ExtResource("6_p57ef")]
-offset_left = -18.0
-offset_top = -1051.0
-offset_right = 10.0
-offset_bottom = -1031.0
+offset_left = -1855.0
+offset_top = -1062.0
+offset_right = -1827.0
+offset_bottom = -1042.0
 scale = Vector2(2.19999, 2.19999)
 inventory_item_scene = ExtResource("7_u5sy4")
 available_towers = Array[PackedScene]([ExtResource("2_lnu2h"), ExtResource("8_gee14"), ExtResource("2_lnu2h")])
 sprite_path = "TurretGraphics/Barrel"
 
 [node name="Money" parent="." instance=ExtResource("9_0tnpc")]
-offset_left = -1658.0
-offset_top = -940.0
-offset_right = -1618.0
-offset_bottom = -900.0
+offset_left = 1918.0
+offset_top = -946.0
+offset_right = 1958.0
+offset_bottom = -906.0
+
+[node name="TowerPlacementManager" type="Node" parent="."]
+script = ExtResource("10_kvuet")
+money_node = NodePath("../Money")
+tilemap_node = NodePath("../TileMapLayer")
+tower_manager_node = NodePath("../TowerManager")
+
+[node name="EnemyManager" type="Node" parent="."]
+script = ExtResource("11_trtic")
+
+[node name="TowerManager" type="Node" parent="."]
+script = ExtResource("12_ir15t")
+
+[node name="PathManager" type="Node" parent="."]
+script = ExtResource("13_ca42v")

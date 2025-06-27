@@ -1,6 +1,7 @@
 extends Node2D
 
 class_name EntityGraphics
+
 @export var life_bar_position: Vector2 = position + Vector2(-50, -80)
 
 @onready var entity_logic: Entity = get_parent()
@@ -17,17 +18,19 @@ func update_life_bar(new_health: int, max_health: int):
 	if life_bar:
 		if not life_bar.visible:
 			life_bar.visible = true
+			
 		life_bar.update_health(new_health)
 
 func on_entity_died():
-	# Handle any death animations or effects here
 	queue_free() # Remove the graphics node when the logic node dies
 
 func _setup_life_bar(position: Vector2):
 	var life_bar_instance = LifeBarScene.instantiate()
-	add_child(life_bar_instance)
+	
 	life_bar_instance.position = position
 	life_bar_instance.set_max_health(entity_logic.max_health)
 	life_bar_instance.update_health(entity_logic.current_health)
 	life_bar_instance.visible = false
 	life_bar = life_bar_instance
+	
+	add_child(life_bar_instance)

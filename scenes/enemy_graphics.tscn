@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cbi8pf4pinuje"]
 
-[ext_resource type="Script" uid="uid://brnge4dd72x57" path="res://scripts/enemy_graphics.gd" id="1_wqewa"]
+[ext_resource type="Script" uid="uid://brnge4dd72x57" path="res://scripts/Entity/Enemy/enemy_graphics.gd" id="1_wqewa"]
 [ext_resource type="Texture2D" uid="uid://cg0yvwarwbwf6" path="res://assets/Tilesheet/towerDefense_tilesheet@2.png" id="4_8fhb5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_md0e3"]

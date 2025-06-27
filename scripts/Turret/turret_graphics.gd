@@ -1,4 +1,4 @@
-extends EntityGraphics
+extends "res://scripts/Entity/entity_graphics.gd"
 
 class_name TurretGraphics
 
@@ -36,7 +36,8 @@ func _process(delta):
 
 func _on_target_angle_changed(new_angle: float):
 	if turret_barrel:
-		turret_barrel.rotation = lerp_angle(turret_barrel.rotation, new_angle, rotation_speed * get_process_delta_time())
+		turret_barrel.rotation = lerp_angle(turret_barrel.rotation, new_angle, 
+									rotation_speed * get_process_delta_time())
 
 func _on_shot(target_position: Vector2):
 	for flash in flash_sprites:
