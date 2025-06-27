@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Wave" load_steps=2 format=3 uid="uid://bjwsl6xtfq1sp"]
+
+[ext_resource type="Script" uid="uid://cmqprwjd8fs7j" path="res://scripts/Wave/wave.gd" id="1_ndxv0"]
+
+[resource]
+script = ExtResource("1_ndxv0")
+enemy_type = "normal"
+count = 5
+interval = 1.0
