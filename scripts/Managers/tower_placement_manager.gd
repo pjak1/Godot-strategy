@@ -36,6 +36,7 @@ func start_placing(scene: PackedScene):
 		tower_to_place.queue_free()
 	tower_scene = scene
 	tower_to_place = tower_scene.instantiate()
+	tower_to_place.enable_targeting = false
 	
 	if tower_to_place.cost <= money.get_current_money():
 		tower_to_place.modulate = COLOR_VALID
@@ -69,15 +70,22 @@ func cancel():
 	tower_to_place = null
 
 func is_position_valid(pos: Vector2) -> bool:
-	return not is_out_of_bounds(pos) \
+	return not is_out_of_bounds(pos, 100, 100, 0, 0) \
 		and not path_manager.is_near_path(pos, PATH_RADIUS) \
 		and not tower_manager.is_tower_near(pos, TOWER_RADIUS)
 
-func is_out_of_bounds(pos: Vector2) -> bool:
+func is_out_of_bounds(pos: Vector2, margin_left: int, margin_right: int, margin_top: int, margin_bottom: int) -> bool:
 	var used_rect: Rect2 = tilemap.get_used_rect()
 	var top_left = tilemap.map_to_local(used_rect.position)
 	var bottom_right = tilemap.map_to_local(used_rect.position + used_rect.size)
+
 	var bounds_rect = Rect2(top_left, bottom_right - top_left)
+
+	bounds_rect.position.x += margin_left
+	bounds_rect.position.y += margin_top
+	bounds_rect.size.x -= (margin_left + margin_right)
+	bounds_rect.size.y -= (margin_top + margin_bottom)
+
 	return not bounds_rect.has_point(pos)
 
 func is_placing() -> bool:

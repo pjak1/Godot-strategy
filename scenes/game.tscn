@@ -73,6 +73,7 @@ script = ExtResource("10_kvuet")
 money_node = NodePath("../Money")
 tilemap_node = NodePath("../TileMapLayer")
 tower_manager_node = NodePath("../TowerManager")
+path_manager_node = NodePath("../PathManager")
 
 [node name="EnemyManager" type="Node" parent="."]
 script = ExtResource("11_trtic")
