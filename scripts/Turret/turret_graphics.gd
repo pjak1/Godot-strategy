@@ -54,7 +54,6 @@ func update_barrel_rotation(delta: float):
 func draw_debug_range():
 	draw_circle(turret_barrel.position, range_radius, Color(1, 0, 0, 0.25))
 
-
 func _on_target_angle_changed(angle: float):
 	target_angle = angle
 	notify_logic_about_barrel_rotation()

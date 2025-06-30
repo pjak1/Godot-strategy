@@ -10,7 +10,7 @@ var spawn_timer := 0.0
 var wave_enemies_remaining = -1
 var wave_index = 0
 var number_of_waves = 0
-var enemy_type = null
+var enemy_data: EnemyData = null
 var wave_already_finished := false
 
 signal enemy_spawned
@@ -54,7 +54,7 @@ func spawn_enemy() -> void:
 func create_enemy() -> EnemyLogic:
 	var enemy: EnemyLogic = enemy_logic_scene.instantiate()
 	
-	enemy.type = enemy_type
+	enemy.initialize(enemy_data)
 	enemy.global_position = global_position
 	enemy.connect("died", _on_enemy_died)
 	return enemy
@@ -107,23 +107,22 @@ func get_path_global_points(path: Path2D) -> Array[Vector2]:
 func start_wave():
 	if wave_index >= number_of_waves:
 		return
-	
-	wave_already_finished = false
-	
+		
 	var current_wave: Wave = wave_set.waves[wave_index]
+	wave_already_finished = false
 	
 	notify_wave_started()
 	
 	spawn_timer = current_wave.interval
-	enemy_type = current_wave.enemy_type
+	enemy_data = current_wave.enemy_data
 	wave_enemies_remaining = current_wave.count
 	wave_index += 1
 
 func notify_wave_finished():
 	emit_signal("wave_finished")
+	
+func notify_wave_started():
+	emit_signal("wave_started", wave_index)
 
 func _on_enemy_died(enemy):
 	wave_enemies_remaining -= 1
-
-func notify_wave_started():
-	emit_signal("wave_started", wave_index)

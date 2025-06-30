@@ -30,12 +30,10 @@ func start_placing(scene: PackedScene):
 
 func update_position(pos: Vector2):
 	if tower_to_place:
-		tower_to_place.global_position = pos
-
 		var is_valid = validator.is_position_valid(pos)
-
-		if "set_placement_state" in tower_to_place:
-			tower_to_place.set_placement_state(is_valid)
+		tower_to_place.global_position = pos
+		
+		tower_to_place.set_placement_state(is_valid)
 
 
 func confirm(pos: Vector2):

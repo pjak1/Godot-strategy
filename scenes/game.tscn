@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://drsf0cfc0tfjd" path="res://scenes/spawnpoint.tscn" id="3_lbhrr"]
 [ext_resource type="TileSet" uid="uid://cm6ji3vk54vlq" path="res://assets/Tilesheet/game.tres" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://38327qepamfd" path="res://scenes/enemy.tscn" id="4_lbhrr"]
-[ext_resource type="Resource" uid="uid://dhetm6dyfjaq0" path="res://data/standard_wave_set.tres" id="5_trtic"]
+[ext_resource type="Resource" uid="uid://dhetm6dyfjaq0" path="res://data/WaveSets/standard_wave_set.tres" id="5_trtic"]
 [ext_resource type="PackedScene" uid="uid://cha80n4nys568" path="res://scenes/tower_inventory.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://bj7bvanf1l8ob" path="res://scenes/inventory_item.tscn" id="7_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://duwedlfq7l1el" path="res://scenes/small_turret.tscn" id="8_gee14"]

@@ -26,4 +26,4 @@ func _on_tower_selected(scene: PackedScene):
 	placement.start_placing(scene)
 
 func _on_enemy_killed(enemy):
-	money.add_money(100)
+	money.add_money(enemy.reward)

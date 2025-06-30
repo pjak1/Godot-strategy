@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://i8fajwcbrluq"]
+
+[ext_resource type="Script" uid="uid://bjceq26pj7722" path="res://scripts/EnemyData/enemy_data.gd" id="1_4y2hb"]
+
+[resource]
+script = ExtResource("1_4y2hb")
+reward = 10
+max_health = 100
+speed = 100.0
+damage = 15
+max_turn_speed = 1.5708
+type = "desert"

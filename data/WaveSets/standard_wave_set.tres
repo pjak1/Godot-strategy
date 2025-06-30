@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bjowpo5lvwyg7" path="res://scripts/Wave/wave_set.gd" id="1_e1c3l"]
 [ext_resource type="Script" uid="uid://cmqprwjd8fs7j" path="res://scripts/Wave/wave.gd" id="2_0o5p0"]
-[ext_resource type="Resource" uid="uid://behslymrbuw3m" path="res://data/normal_wave.tres" id="3_jc05p"]
-[ext_resource type="Resource" uid="uid://bjwsl6xtfq1sp" path="res://data/desert_wave.tres" id="4_51j61"]
+[ext_resource type="Resource" uid="uid://behslymrbuw3m" path="res://data/Waves/normal_wave.tres" id="3_jc05p"]
+[ext_resource type="Resource" uid="uid://bjwsl6xtfq1sp" path="res://data/Waves/desert_wave.tres" id="4_51j61"]
 
 [resource]
 script = ExtResource("1_e1c3l")

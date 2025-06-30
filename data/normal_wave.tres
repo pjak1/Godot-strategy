@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="Wave" load_steps=2 format=3 uid="uid://behslymrbuw3m"]
-
-[ext_resource type="Script" uid="uid://cmqprwjd8fs7j" path="res://scripts/Wave/wave.gd" id="1_yarml"]
-
-[resource]
-script = ExtResource("1_yarml")
-enemy_type = "desert"
-count = 10
-interval = 2.0
