@@ -6,84 +6,87 @@ class_name TurretLogic
 @export var range: float = 1000.0
 @export var enable_targeting: bool = true
 @export var angle_offset_deg: float = 87.0
-@export var turret_graphics_path: NodePath = "TurretGraphics"
-@export var barrel_node_name: String = "Barrel"
 @export var targeted_groups: Array[String] = ["Enemy"]
 @export var cost: int = 100
 
 var fire_cooldown: float = 0.0
 var current_target: Node2D = null
-var fire_threshold := 0.10
-
-var turret_graphics: Node = null
+var barrel_angle: float = 0.0
+var fire_threshold := 0.15
 
 signal target_angle_changed(new_angle: float)
+signal fire(target_position: Vector2)
+signal range_changed(new_range: float)
 
 func _ready():
 	super._ready()
 	fire_cooldown = 0.0
-	turret_graphics = get_node_or_null(turret_graphics_path)
+	emit_signal("range_changed", range)
 
 func _process(delta):
-	fire_cooldown = max(fire_cooldown - delta, 0.0)
-	
+	update_fire_cooldown(delta)
 	if enable_targeting:
-		current_target = find_nearest_enemy()
-		
-		if current_target:
-			var direction = current_target.global_position - global_position
-			var target_angle = direction.angle() + deg_to_rad(angle_offset_deg)
-			
-			emit_signal("target_angle_changed", target_angle)
+		handle_targeting()
 
-			var current_barrel_rotation := 0.0
-			
-			if turret_graphics and turret_graphics.has_node(barrel_node_name):
-				var barrel_node = turret_graphics.get_node(barrel_node_name)
-				
-				if barrel_node is Node2D:
-					current_barrel_rotation = barrel_node.rotation
-			
-			var angle_diff = abs(angle_wrap(current_barrel_rotation - target_angle))
+func update_fire_cooldown(delta: float) -> void:
+	fire_cooldown = max(fire_cooldown - delta, 0.0)
 
-			if angle_diff < fire_threshold and fire_cooldown <= 0.0:
-				deal_damage(current_target)
-				fire_cooldown = 1.0 / rate_of_fire
-		else:
-			emit_signal("target_angle_changed", deg_to_rad(angle_offset_deg))
+func handle_targeting():
+	current_target = find_nearest_enemy()
+	if current_target:
+		handle_target_found()
+	else:
+		handle_no_target()
+
+func handle_target_found():
+	var angle_to_target = compute_target_angle(current_target.global_position)
+	emit_signal("target_angle_changed", angle_to_target)
+
+	if is_barrel_aligned(angle_to_target) and can_fire():
+		fire_at_target()
+
+func handle_no_target():
+	var idle_angle = deg_to_rad(angle_offset_deg)
+	emit_signal("target_angle_changed", idle_angle)
+
+func compute_target_angle(target_pos: Vector2) -> float:
+	var dir = target_pos - global_position
+	return dir.angle() + deg_to_rad(angle_offset_deg)
+
+func is_barrel_aligned(target_angle: float) -> bool:
+	var angle_diff = abs(angle_wrap(barrel_angle - target_angle))
+	return angle_diff < fire_threshold
+
+func can_fire() -> bool:
+	return fire_cooldown <= 0.0
+
+func fire_at_target():
+	emit_signal("fire", current_target.global_position)
+	deal_damage(current_target)
+	fire_cooldown = 1.0 / rate_of_fire
 
 func find_nearest_enemy() -> Node2D:
-	var nearest_enemy: Node2D = null
-	var shortest_distance := INF
-	
-	for group_name in targeted_groups:
-		for enemy in get_tree().get_nodes_in_group(group_name):
+	var nearest: Node2D = null
+	var shortest := INF
+
+	for group in targeted_groups:
+		for enemy in get_tree().get_nodes_in_group(group):
 			if enemy == self:
 				continue
-				
-			if enemy and enemy is Node2D:
-				var distance = global_position.distance_to(enemy.global_position)
-				
-				if distance < shortest_distance and distance <= range:
-					shortest_distance = distance
-					nearest_enemy = enemy
+			if enemy is Node2D:
+				var dist = global_position.distance_to(enemy.global_position)
+				if dist < shortest and dist <= range:
+					shortest = dist
+					nearest = enemy
 
-	return nearest_enemy
-	
-func angle_wrap(angle):
+	return nearest
+
+func update_barrel_angle(angle: float):
+	barrel_angle = angle
+
+func angle_wrap(angle: float) -> float:
 	while angle > PI:
 		angle -= TAU
-		
 	while angle < -PI:
 		angle += TAU
-		
 	return angle
-
-func set_range_debug(debug: bool):
-	if turret_graphics == null:
-		turret_graphics = get_node_or_null(turret_graphics_path)
-		
-	if turret_graphics and turret_graphics.has_method("set"):
-		turret_graphics.set("show_range_debug", debug)
-	else:
-		push_warning("TurretGraphics not found or invalid when setting range debug")

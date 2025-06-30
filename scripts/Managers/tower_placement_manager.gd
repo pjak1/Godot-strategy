@@ -40,7 +40,7 @@ func start_placing(scene: PackedScene):
 	
 	if tower_to_place.cost <= money.get_current_money():
 		tower_to_place.modulate = COLOR_VALID
-		tower_to_place.set_range_debug(true)
+		set_debug_circle(tower_to_place, true)
 		add_child(tower_to_place)
 
 func update_position(pos: Vector2):
@@ -55,7 +55,7 @@ func confirm(pos: Vector2):
 	tower_to_place.global_position = pos
 	tower_to_place.modulate = COLOR_CONFIRMED
 	tower_to_place.enable_targeting = true
-	tower_to_place.set_range_debug(false)
+	set_debug_circle(tower_to_place, false)
 
 	tower_manager.register(tower_to_place)
 	money.spend_money(tower_to_place.cost)
@@ -90,3 +90,8 @@ func is_out_of_bounds(pos: Vector2, margin_left: int, margin_right: int, margin_
 
 func is_placing() -> bool:
 	return tower_to_place != null
+
+func set_debug_circle(tower: Node2D, visible: bool) -> void:
+	var graphics = tower.get_node_or_null("TurretGraphics")
+	if graphics and graphics.has_method("set_range_debug"):
+		graphics.set_range_debug(visible)

@@ -34,3 +34,19 @@ func _setup_life_bar(position: Vector2):
 	life_bar = life_bar_instance
 	
 	add_child(life_bar_instance)
+
+func get_inventory_sprite_texture() -> Texture2D:
+	return _find_first_sprite_with_texture(self)
+
+func _find_first_sprite_with_texture(node: Node) -> Texture2D:
+	for child in node.get_children():
+		if child is Sprite2D or child is AnimatedSprite2D:
+			if child.texture:
+				return child.texture
+		
+		if child.get_child_count() > 0:
+			var texture = _find_first_sprite_with_texture(child)
+			if texture:
+				return texture
+	
+	return null

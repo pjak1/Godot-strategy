@@ -1,23 +1,36 @@
-extends "res://scripts/Entity/entity_graphics.gd"
+extends EntityGraphics
 
 class_name TurretGraphics
 
-@onready var turret_base: Node2D = $"." 
-@onready var turret_barrel: Node2D = $Barrel
-@onready var turret_logic: TurretLogic = get_parent()
-
 @export var rotation_speed: float = 5.0
-@export var angle_offset_deg: float = 87.0
 @export var show_range_debug: bool = false
 
-# Automatically collected flash sprite nodes
+@onready var turret_base: Node2D = $"." 
+@onready var turret_barrel: Node2D = $Barrel
+
+var target_angle: float = 0.0
+var range_radius: float = 1000.0
 var flash_sprites: Array[AnimatedSprite2D] = []
 
 func _ready():
-	life_bar_position = position + Vector2(-50,-90)
 	super._ready()
-	
-	# Find all AnimatedSprite2D children in Barrel
+	life_bar_position = position + Vector2(-50, -90)
+	setup_flash_sprites()
+	connect_to_turret_logic()
+
+func _process(delta):
+	update_barrel_rotation(delta)
+	queue_redraw()
+
+func set_range_debug(enabled: bool):
+	show_range_debug = enabled
+
+func _draw():
+	if show_range_debug:
+		draw_debug_range()
+
+
+func setup_flash_sprites():
 	for child in turret_barrel.get_children():
 		if child is AnimatedSprite2D:
 			var sprite := child as AnimatedSprite2D
@@ -25,30 +38,43 @@ func _ready():
 			sprite.connect("animation_finished", func(): _on_flash_finished(sprite))
 			flash_sprites.append(sprite)
 
-	if turret_logic and turret_logic is TurretLogic:
+func connect_to_turret_logic():
+	var turret_logic = owner as TurretLogic
+	
+	if turret_logic:
 		turret_logic.target_angle_changed.connect(_on_target_angle_changed)
-		turret_logic.delt_damage.connect(_on_shot)
+		turret_logic.fire.connect(_on_fire)
+		turret_logic.range_changed.connect(_on_range_changed)
 	else:
-		push_error("TurretGraphics: Parent is not TurretLogic or is null!")
+		push_warning("TurretGraphics: Could not connect to TurretLogic")
 
-func _process(delta):
-	queue_redraw()
+func update_barrel_rotation(delta: float):
+	turret_barrel.rotation = lerp_angle(turret_barrel.rotation, target_angle, rotation_speed * delta)
 
-func _on_target_angle_changed(new_angle: float):
-	if turret_barrel:
-		turret_barrel.rotation = lerp_angle(turret_barrel.rotation, new_angle, 
-									rotation_speed * get_process_delta_time())
+func draw_debug_range():
+	draw_circle(turret_barrel.position, range_radius, Color(1, 0, 0, 0.25))
 
-func _on_shot(target_position: Vector2):
+
+func _on_target_angle_changed(angle: float):
+	target_angle = angle
+	notify_logic_about_barrel_rotation()
+
+func _on_fire(target_position: Vector2):
+	play_flash_effects()
+
+func _on_range_changed(new_range: float):
+	range_radius = new_range
+
+func notify_logic_about_barrel_rotation():
+	var turret_logic = owner as TurretLogic
+	if turret_logic:
+		turret_logic.update_barrel_angle(turret_barrel.rotation)
+
+func play_flash_effects():
 	for flash in flash_sprites:
 		flash.visible = true
 		flash.frame = 0
 		flash.play("shoot")
 
-func _on_flash_finished(flash_to_hide: AnimatedSprite2D):
-	flash_to_hide.visible = false
-
-func _draw():
-	if show_range_debug and turret_barrel and turret_logic and turret_logic is TurretLogic:
-		var range = turret_logic.range
-		draw_circle(turret_barrel.position, range, Color(1, 0, 0, 0.25))
+func _on_flash_finished(flash: AnimatedSprite2D):
+	flash.visible = false

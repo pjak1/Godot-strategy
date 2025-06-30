@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://c6koscqfkij2a"]
+[gd_scene load_steps=20 format=4 uid="uid://c6koscqfkij2a"]
 
 [ext_resource type="Script" uid="uid://cmyxdtdofbris" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bum5i44oov6lc" path="res://scenes/turret.tscn" id="2_lnu2h"]
@@ -14,6 +14,9 @@
 [ext_resource type="Script" uid="uid://bjll68ha667wc" path="res://scripts/Managers/Enemy_manager.gd" id="11_trtic"]
 [ext_resource type="Script" uid="uid://dlm0jq8lsinqc" path="res://scripts/Managers/tower_manager.gd" id="12_ir15t"]
 [ext_resource type="Script" uid="uid://dk012yfrb7rlr" path="res://scripts/Managers/path_manager.gd" id="13_ca42v"]
+[ext_resource type="Script" uid="uid://df8q41e5umrho" path="res://scripts/Managers/wave_manager.gd" id="15_ir15t"]
+[ext_resource type="PackedScene" uid="uid://r0e2ca4se74w" path="res://scenes/wave_counter.tscn" id="16_ca42v"]
+[ext_resource type="Script" uid="uid://33b7gx5t0v01" path="res://scripts/WaveCounter/wave_counter.gd" id="17_rysoc"]
 
 [sub_resource type="Curve2D" id="Curve2D_lnu2h"]
 _data = {
@@ -61,8 +64,7 @@ offset_right = -1827.0
 offset_bottom = -1042.0
 scale = Vector2(2.19999, 2.19999)
 inventory_item_scene = ExtResource("7_u5sy4")
-available_towers = Array[PackedScene]([ExtResource("2_lnu2h"), ExtResource("8_gee14"), ExtResource("2_lnu2h")])
-sprite_path = "TurretGraphics/Barrel"
+available_towers = Array[PackedScene]([ExtResource("2_lnu2h"), ExtResource("8_gee14")])
 
 [node name="Money" parent="." instance=ExtResource("9_0tnpc")]
 offset_left = 1918.0
@@ -85,3 +87,16 @@ script = ExtResource("12_ir15t")
 
 [node name="PathManager" type="Node" parent="."]
 script = ExtResource("13_ca42v")
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("15_ir15t")
+spawners = Array[NodePath]([NodePath("../Spawnpoint"), NodePath("../Spawnpoint2")])
+
+[node name="WaveCounter" parent="." node_paths=PackedStringArray("wave_manager") instance=ExtResource("16_ca42v")]
+offset_left = 58.0
+offset_top = -1055.0
+offset_right = 98.0
+offset_bottom = -1015.0
+scale = Vector2(3.24, 3.24)
+script = ExtResource("17_rysoc")
+wave_manager = NodePath("../WaveManager")

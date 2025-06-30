@@ -7,22 +7,26 @@ class_name Spawner
 
 var spawn_interval: float = 5.0
 var spawn_timer := 0.0
-var wave_enemies_remaining = 0
+var wave_enemies_remaining = -1
 var wave_index = 0
 var number_of_waves = 0
 var enemy_type = null
+var wave_already_finished := false
 
 signal enemy_spawned
-signal waves_finished
+signal wave_started
+signal wave_finished
 
 func _ready():
 	number_of_waves = wave_set.waves.size()
-	start_wave()
 
 func _process(delta):
 	update_spawn_timer(delta)
 	handle_spawning()
-	handle_wave_transition()
+	
+	if wave_enemies_remaining == 0 and not wave_already_finished:
+		wave_already_finished = true
+		notify_wave_finished()
 
 func update_spawn_timer(delta: float) -> void:
 	spawn_timer += delta
@@ -35,10 +39,6 @@ func handle_spawning() -> void:
 	if can_spawn:
 		spawn_timer = 0.0
 		spawn_enemy()
-
-func handle_wave_transition() -> void:
-	if wave_enemies_remaining == 0 and wave_index - 1 < number_of_waves:
-		start_wave()
 
 func spawn_enemy() -> void:
 	if not enemy_logic_scene:
@@ -84,6 +84,7 @@ func find_closest_path_points(position: Vector2) -> Array[Vector2]:
 			continue
 
 		var curve = path.curve
+		
 		if curve.get_point_count() == 0:
 			continue
 
@@ -105,18 +106,24 @@ func get_path_global_points(path: Path2D) -> Array[Vector2]:
 
 func start_wave():
 	if wave_index >= number_of_waves:
-		notify_waves_finished()
 		return
-
+	
+	wave_already_finished = false
+	
 	var current_wave: Wave = wave_set.waves[wave_index]
+	
+	notify_wave_started()
 	
 	spawn_timer = current_wave.interval
 	enemy_type = current_wave.enemy_type
 	wave_enemies_remaining = current_wave.count
 	wave_index += 1
 
-func notify_waves_finished():
-	emit_signal("waves_finished")
+func notify_wave_finished():
+	emit_signal("wave_finished")
 
 func _on_enemy_died(enemy):
 	wave_enemies_remaining -= 1
+
+func notify_wave_started():
+	emit_signal("wave_started", wave_index)

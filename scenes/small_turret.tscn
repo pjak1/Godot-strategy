@@ -16,6 +16,3 @@ scale = Vector2(2, 2)
 shape = SubResource("CapsuleShape2D_pp6j5")
 
 [node name="TurretGraphics" parent="." instance=ExtResource("2_leld1")]
-rotation_speed = 5.0
-angle_offset_deg = 87.0
-show_range_debug = false
