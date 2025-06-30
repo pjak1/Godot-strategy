@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cggm63m3kgyf0"]
+
+[ext_resource type="Script" uid="uid://buh6s2wqtepye" path="res://scripts/Managers/tower_placement_manager.gd" id="1_gw3hs"]
+[ext_resource type="Script" uid="uid://2bqeov6sjuhe" path="res://scripts/PlacementValidator/placement_validator.gd" id="2_8cb2r"]
+
+[node name="TowerPlacementManager" type="Node"]
+script = ExtResource("1_gw3hs")
+
+[node name="PlacementValidator" type="Node" parent="."]
+script = ExtResource("2_8cb2r")

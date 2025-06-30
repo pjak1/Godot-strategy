@@ -22,7 +22,7 @@ func update_life_bar(new_health: int, max_health: int):
 		life_bar.update_health(new_health)
 
 func on_entity_died():
-	queue_free() # Remove the graphics node when the logic node dies
+	queue_free()
 
 func _setup_life_bar(position: Vector2):
 	var life_bar_instance = LifeBarScene.instantiate()

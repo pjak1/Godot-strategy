@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://c6koscqfkij2a"]
+[gd_scene load_steps=21 format=4 uid="uid://c6koscqfkij2a"]
 
 [ext_resource type="Script" uid="uid://cmyxdtdofbris" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bum5i44oov6lc" path="res://scenes/turret.tscn" id="2_lnu2h"]
@@ -10,13 +10,14 @@
 [ext_resource type="PackedScene" uid="uid://bj7bvanf1l8ob" path="res://scenes/inventory_item.tscn" id="7_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://duwedlfq7l1el" path="res://scenes/small_turret.tscn" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://0i50wrimpkts" path="res://scenes/money.tscn" id="9_0tnpc"]
-[ext_resource type="Script" uid="uid://buh6s2wqtepye" path="res://scripts/Managers/tower_placement_manager.gd" id="10_kvuet"]
+[ext_resource type="PackedScene" uid="uid://cggm63m3kgyf0" path="res://scenes/tower_placement_manager.tscn" id="11_rysoc"]
 [ext_resource type="Script" uid="uid://bjll68ha667wc" path="res://scripts/Managers/Enemy_manager.gd" id="11_trtic"]
 [ext_resource type="Script" uid="uid://dlm0jq8lsinqc" path="res://scripts/Managers/tower_manager.gd" id="12_ir15t"]
 [ext_resource type="Script" uid="uid://dk012yfrb7rlr" path="res://scripts/Managers/path_manager.gd" id="13_ca42v"]
 [ext_resource type="Script" uid="uid://df8q41e5umrho" path="res://scripts/Managers/wave_manager.gd" id="15_ir15t"]
 [ext_resource type="PackedScene" uid="uid://r0e2ca4se74w" path="res://scenes/wave_counter.tscn" id="16_ca42v"]
 [ext_resource type="Script" uid="uid://33b7gx5t0v01" path="res://scripts/WaveCounter/wave_counter.gd" id="17_rysoc"]
+[ext_resource type="Script" uid="uid://dutoogcitifll" path="res://scripts/BoundsValidator/bounds_validator.gd" id="18_ssvqc"]
 
 [sub_resource type="Curve2D" id="Curve2D_lnu2h"]
 _data = {
@@ -72,12 +73,9 @@ offset_top = -946.0
 offset_right = 1958.0
 offset_bottom = -906.0
 
-[node name="TowerPlacementManager" type="Node" parent="."]
-script = ExtResource("10_kvuet")
-money_node = NodePath("../Money")
-tilemap_node = NodePath("../TileMapLayer")
-tower_manager_node = NodePath("../TowerManager")
-path_manager_node = NodePath("../PathManager")
+[node name="BoundsValidator" type="Node" parent="." node_paths=PackedStringArray("tilemap")]
+script = ExtResource("18_ssvqc")
+tilemap = NodePath("../TileMapLayer")
 
 [node name="EnemyManager" type="Node" parent="."]
 script = ExtResource("11_trtic")
@@ -87,6 +85,12 @@ script = ExtResource("12_ir15t")
 
 [node name="PathManager" type="Node" parent="."]
 script = ExtResource("13_ca42v")
+
+[node name="TowerPlacementManager" parent="." instance=ExtResource("11_rysoc")]
+money_path = NodePath("../Money")
+tower_manager_path = NodePath("../TowerManager")
+bounds_validator = NodePath("../BoundsValidator")
+path_manager = NodePath("../PathManager")
 
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource("15_ir15t")

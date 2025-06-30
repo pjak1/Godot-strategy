@@ -29,7 +29,6 @@ func _draw():
 	if show_range_debug:
 		draw_debug_range()
 
-
 func setup_flash_sprites():
 	for child in turret_barrel.get_children():
 		if child is AnimatedSprite2D:
@@ -45,6 +44,7 @@ func connect_to_turret_logic():
 		turret_logic.target_angle_changed.connect(_on_target_angle_changed)
 		turret_logic.fire.connect(_on_fire)
 		turret_logic.range_changed.connect(_on_range_changed)
+		turret_logic.placement_state_changed.connect(_on_placement_state_changed)
 	else:
 		push_warning("TurretGraphics: Could not connect to TurretLogic")
 
@@ -76,5 +76,25 @@ func play_flash_effects():
 		flash.frame = 0
 		flash.play("shoot")
 
+func show_valid_preview():
+	modulate = Color(1, 1, 1, 0.5)
+	set_range_debug(true)
+
+func show_invalid_preview():
+	modulate = Color(1, 0.3, 0.3, 0.7)
+
+func confirm_placement():
+	modulate = Color(1, 1, 1)
+	set_range_debug(false)
+
 func _on_flash_finished(flash: AnimatedSprite2D):
 	flash.visible = false
+
+func _on_placement_state_changed(state: String):
+	match state:
+		"valid":
+			show_valid_preview()
+		"invalid":
+			show_invalid_preview()
+		"confirmed":
+			confirm_placement()

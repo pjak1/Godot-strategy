@@ -2,65 +2,54 @@ extends Node
 
 class_name TowerPlacementManager
 
-signal tower_placed(tower: Node2D)
+@export var money_path: NodePath
+@export var tower_manager_path: NodePath
+@export var bounds_validator : NodePath
+@export var path_manager: NodePath
 
-@export var money_node: NodePath
-@export var tilemap_node: NodePath
-@export var tower_manager_node: NodePath
-@export var path_manager_node: NodePath
+@onready var tower_manager = get_node(tower_manager_path)
+@onready var money = get_node(money_path)
+@onready var validator: PlacementValidator = $PlacementValidator
 
-const COLOR_VALID = Color(1, 1, 1, 0.5)
-const COLOR_INVALID = Color(1, 0.3, 0.3, 0.7)
-const COLOR_CONFIRMED = Color(1, 1, 1)
-
-const TOWER_RADIUS = 150.0
-const PATH_RADIUS = 180.0
-
-var money
-var tilemap
-var tower_manager
-var path_manager
-
-var tower_instances: Dictionary = {}
 var tower_to_place: Node2D = null
 var tower_scene: PackedScene = null
 
-func _ready():
-	money = get_node(money_node)
-	tilemap = get_node(tilemap_node)
-	tower_manager = get_node(tower_manager_node)
-	path_manager = get_node(path_manager_node)
+signal tower_placed(tower: Node2D)
 
 func start_placing(scene: PackedScene):
 	if tower_to_place:
 		tower_to_place.queue_free()
+
 	tower_scene = scene
 	tower_to_place = tower_scene.instantiate()
 	tower_to_place.enable_targeting = false
-	
+
 	if tower_to_place.cost <= money.get_current_money():
-		tower_to_place.modulate = COLOR_VALID
-		set_debug_circle(tower_to_place, true)
+		tower_to_place.set_placement_state(true)
 		add_child(tower_to_place)
 
 func update_position(pos: Vector2):
 	if tower_to_place:
 		tower_to_place.global_position = pos
-		tower_to_place.modulate = COLOR_VALID if is_position_valid(pos) else COLOR_INVALID
+
+		var is_valid = validator.is_position_valid(pos)
+
+		if "set_placement_state" in tower_to_place:
+			tower_to_place.set_placement_state(is_valid)
+
 
 func confirm(pos: Vector2):
-	if not is_position_valid(pos):
+	if not validator.is_position_valid(pos):
 		return false
 
 	tower_to_place.global_position = pos
-	tower_to_place.modulate = COLOR_CONFIRMED
 	tower_to_place.enable_targeting = true
-	set_debug_circle(tower_to_place, false)
+	tower_to_place.set_placement_state("confirmed")
 
 	tower_manager.register(tower_to_place)
 	money.spend_money(tower_to_place.cost)
-
 	emit_signal("tower_placed", tower_to_place)
+
 	tower_to_place = null
 	return true
 
@@ -69,29 +58,5 @@ func cancel():
 		tower_to_place.queue_free()
 	tower_to_place = null
 
-func is_position_valid(pos: Vector2) -> bool:
-	return not is_out_of_bounds(pos, 100, 100, 0, 0) \
-		and not path_manager.is_near_path(pos, PATH_RADIUS) \
-		and not tower_manager.is_tower_near(pos, TOWER_RADIUS)
-
-func is_out_of_bounds(pos: Vector2, margin_left: int, margin_right: int, margin_top: int, margin_bottom: int) -> bool:
-	var used_rect: Rect2 = tilemap.get_used_rect()
-	var top_left = tilemap.map_to_local(used_rect.position)
-	var bottom_right = tilemap.map_to_local(used_rect.position + used_rect.size)
-
-	var bounds_rect = Rect2(top_left, bottom_right - top_left)
-
-	bounds_rect.position.x += margin_left
-	bounds_rect.position.y += margin_top
-	bounds_rect.size.x -= (margin_left + margin_right)
-	bounds_rect.size.y -= (margin_top + margin_bottom)
-
-	return not bounds_rect.has_point(pos)
-
 func is_placing() -> bool:
 	return tower_to_place != null
-
-func set_debug_circle(tower: Node2D, visible: bool) -> void:
-	var graphics = tower.get_node_or_null("TurretGraphics")
-	if graphics and graphics.has_method("set_range_debug"):
-		graphics.set_range_debug(visible)

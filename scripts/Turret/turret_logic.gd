@@ -17,6 +17,7 @@ var fire_threshold := 0.15
 signal target_angle_changed(new_angle: float)
 signal fire(target_position: Vector2)
 signal range_changed(new_range: float)
+signal placement_state_changed(state: String)
 
 func _ready():
 	super._ready()
@@ -90,3 +91,16 @@ func angle_wrap(angle: float) -> float:
 	while angle < -PI:
 		angle += TAU
 	return angle
+
+func set_placement_state(state_or_valid):
+	var state := ""
+
+	if typeof(state_or_valid) == TYPE_BOOL:
+		state = "valid" if state_or_valid else "invalid"
+	elif typeof(state_or_valid) == TYPE_STRING:
+		state = state_or_valid
+	else:
+		push_warning("Invalid argument passed to set_placement_state")
+		return
+
+	emit_signal("placement_state_changed", state)
