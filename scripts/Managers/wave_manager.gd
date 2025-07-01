@@ -8,8 +8,9 @@ var current_wave_index: int = 0
 var active_spawners: Array[Spawner] = []
 var finished_spawners: int = 0
 var all_waves_finished: bool = false
+var number_of_waves: int = 0
 
-signal all_waves_started(wave_index: int)
+signal all_waves_started(waves_remaining: int)
 signal all_waves_completed
 
 func _ready():
@@ -18,10 +19,17 @@ func _ready():
 
 func initialize_spawners():
 	active_spawners.clear()
+	var wave_size_temp: int
+	
 	for path in spawners:
 		var spawner: Spawner = get_node(path)
 		
 		if spawner:
+			wave_size_temp = spawner.wave_set.get_number_of_waves()
+			
+			if wave_size_temp > number_of_waves:
+				number_of_waves = wave_size_temp
+			
 			active_spawners.append(spawner)
 			spawner.connect("wave_finished", _on_spawner_wave_finished)
 
@@ -57,4 +65,4 @@ func notify_all_waves_completed():
 	emit_signal("all_waves_completed")
 	
 func notify_all_waves_started():
-	emit_signal("all_waves_started", current_wave_index)
+	emit_signal("all_waves_started", number_of_waves - current_wave_index)

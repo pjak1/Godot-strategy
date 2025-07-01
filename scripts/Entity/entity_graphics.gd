@@ -21,7 +21,7 @@ func update_life_bar(new_health: int, max_health: int):
 			
 		life_bar.update_health(new_health)
 
-func on_entity_died():
+func on_entity_died(entity: Entity):
 	queue_free()
 
 func _setup_life_bar(position: Vector2):

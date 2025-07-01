@@ -92,10 +92,6 @@ tower_manager_path = NodePath("../TowerManager")
 bounds_validator = NodePath("../BoundsValidator")
 path_manager = NodePath("../PathManager")
 
-[node name="WaveManager" type="Node" parent="."]
-script = ExtResource("15_ir15t")
-spawners = Array[NodePath]([NodePath("../Spawnpoint"), NodePath("../Spawnpoint2")])
-
 [node name="WaveCounter" parent="." node_paths=PackedStringArray("wave_manager") instance=ExtResource("16_ca42v")]
 offset_left = 58.0
 offset_top = -1055.0
@@ -104,3 +100,7 @@ offset_bottom = -1015.0
 scale = Vector2(3.24, 3.24)
 script = ExtResource("17_rysoc")
 wave_manager = NodePath("../WaveManager")
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("15_ir15t")
+spawners = Array[NodePath]([NodePath("../Spawnpoint"), NodePath("../Spawnpoint2")])

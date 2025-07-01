@@ -25,5 +25,6 @@ func _input(event):
 func _on_tower_selected(scene: PackedScene):
 	placement.start_placing(scene)
 
-func _on_enemy_killed(enemy):
-	money.add_money(enemy.reward)
+func _on_enemy_killed(enemy: EnemyLogic, attacker:Entity):
+	if attacker:
+		money.add_money(enemy.reward)

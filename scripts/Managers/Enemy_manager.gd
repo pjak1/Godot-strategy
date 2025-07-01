@@ -1,7 +1,7 @@
 extends Node
 class_name EnemyManager
 
-signal enemy_killed(enemy)
+signal enemy_killed(enemy: EnemyLogic, attacker: Entity)
 
 var enemies: Dictionary = {}
 
@@ -17,6 +17,6 @@ func _on_enemy_spawned(enemy: EnemyLogic) -> void:
 	enemies[enemy.get_instance_id()] = enemy
 	enemy.connect("died", _on_enemy_died)
 
-func _on_enemy_died(enemy: EnemyLogic) -> void:
+func _on_enemy_died(enemy: EnemyLogic, attacker: Entity) -> void:
 	enemies.erase(enemy.get_instance_id())
-	emit_signal("enemy_killed", enemy)
+	emit_signal("enemy_killed", enemy, attacker)
