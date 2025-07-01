@@ -9,6 +9,8 @@ class_name MovableEntity
 var path_points: Array[Vector2] = []
 var current_point := 0
 
+signal entity_has_reached_end(entity: MovableEntity)
+
 func _ready():
 	super._ready()
 	select_nearest_path_point()
@@ -22,6 +24,7 @@ func move_along_path(delta: float):
 		current_point += 1
 
 	if has_reached_end_of_path():
+		notify_entity_has_reached_end()
 		die(null)
 		return
 
@@ -65,3 +68,6 @@ func select_nearest_path_point():
 			nearest_index = i
 
 	current_point = nearest_index
+
+func notify_entity_has_reached_end():
+	emit_signal("entity_has_reached_end", self)

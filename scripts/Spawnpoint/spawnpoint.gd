@@ -124,5 +124,5 @@ func notify_wave_finished():
 func notify_wave_started():
 	emit_signal("wave_started", wave_index)
 
-func _on_enemy_died(enemy):
+func _on_enemy_died(enemy: EnemyLogic, attacker: Entity):
 	wave_enemies_remaining -= 1

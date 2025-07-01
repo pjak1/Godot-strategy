@@ -5,10 +5,13 @@ extends Node2D
 
 @onready var placement := $TowerPlacementManager
 @onready var enemies := $EnemyManager
+@onready var player_health := $PlayerHealth
+@onready var game_over_menu := $EndGameMenu
 
 func _ready():
 	tower_inventory.connect("tower_selected", _on_tower_selected)
 	enemies.connect("enemy_killed", _on_enemy_killed)
+	player_health.game_over.connect(_on_gameover)
 
 func _input(event):
 	if not placement.is_placing():
@@ -28,3 +31,7 @@ func _on_tower_selected(scene: PackedScene):
 func _on_enemy_killed(enemy: EnemyLogic, attacker:Entity):
 	if attacker:
 		money.add_money(enemy.reward)
+
+func _on_gameover():
+	game_over_menu.visible = true
+	get_tree().paused = true

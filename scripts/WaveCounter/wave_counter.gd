@@ -1,10 +1,10 @@
-extends Control
+extends Node
 
 class_name WaveCounter
 
 @export var wave_manager: WaveManager
 
-@onready var wave_indicator: Label = $Label
+@onready var wave_indicator: Label = $HBoxContainer/Label
 
 var wave_num: int = 0
 

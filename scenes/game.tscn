@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://c6koscqfkij2a"]
+[gd_scene load_steps=23 format=4 uid="uid://c6koscqfkij2a"]
 
 [ext_resource type="Script" uid="uid://cmyxdtdofbris" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bum5i44oov6lc" path="res://scenes/turret.tscn" id="2_lnu2h"]
@@ -18,6 +18,8 @@
 [ext_resource type="PackedScene" uid="uid://r0e2ca4se74w" path="res://scenes/wave_counter.tscn" id="16_ca42v"]
 [ext_resource type="Script" uid="uid://33b7gx5t0v01" path="res://scripts/WaveCounter/wave_counter.gd" id="17_rysoc"]
 [ext_resource type="Script" uid="uid://dutoogcitifll" path="res://scripts/BoundsValidator/bounds_validator.gd" id="18_ssvqc"]
+[ext_resource type="PackedScene" uid="uid://cnericrje62b1" path="res://scenes/player_health.tscn" id="19_264po"]
+[ext_resource type="PackedScene" uid="uid://dwdfbmic1v7cx" path="res://scenes/end_game_menu.tscn" id="20_1kice"]
 
 [sub_resource type="Curve2D" id="Curve2D_lnu2h"]
 _data = {
@@ -93,10 +95,7 @@ bounds_validator = NodePath("../BoundsValidator")
 path_manager = NodePath("../PathManager")
 
 [node name="WaveCounter" parent="." node_paths=PackedStringArray("wave_manager") instance=ExtResource("16_ca42v")]
-offset_left = 58.0
-offset_top = -1055.0
-offset_right = 98.0
-offset_bottom = -1015.0
+position = Vector2(-134, -1093)
 scale = Vector2(3.24, 3.24)
 script = ExtResource("17_rysoc")
 wave_manager = NodePath("../WaveManager")
@@ -104,3 +103,17 @@ wave_manager = NodePath("../WaveManager")
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource("15_ir15t")
 spawners = Array[NodePath]([NodePath("../Spawnpoint"), NodePath("../Spawnpoint2")])
+
+[node name="PlayerHealth" parent="." instance=ExtResource("19_264po")]
+position = Vector2(1319, -1090)
+scale = Vector2(3.24, 3.24)
+enemy_manager_path = NodePath("../EnemyManager")
+
+[node name="EndGameMenu" parent="." instance=ExtResource("20_1kice")]
+process_mode = 2
+visible = false
+offset_left = -185.0
+offset_top = -107.0
+offset_right = -185.0
+offset_bottom = -107.0
+scale = Vector2(3.32, 3.32)

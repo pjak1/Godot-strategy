@@ -41,7 +41,6 @@ func start_next_wave():
 	
 	for spawner in active_spawners:
 		spawner.start_wave()
-	
 	notify_all_waves_started()
 	current_wave_index += 1
 
