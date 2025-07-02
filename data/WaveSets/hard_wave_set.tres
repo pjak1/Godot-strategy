@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WaveSet" load_steps=5 format=3 uid="uid://cl45ls711auh0"]
+
+[ext_resource type="Script" uid="uid://bjowpo5lvwyg7" path="res://scripts/Classes/Wave/wave_set.gd" id="1_sroku"]
+[ext_resource type="Script" uid="uid://cmqprwjd8fs7j" path="res://scripts/Classes/Wave/wave.gd" id="2_cq6dr"]
+[ext_resource type="Resource" uid="uid://behslymrbuw3m" path="res://data/Waves/normal_wave.tres" id="3_4eo5p"]
+[ext_resource type="Resource" uid="uid://bjwsl6xtfq1sp" path="res://data/Waves/desert_wave.tres" id="4_uatr5"]
+
+[resource]
+script = ExtResource("1_sroku")
+waves = Array[ExtResource("2_cq6dr")]([ExtResource("3_4eo5p"), ExtResource("4_uatr5"), ExtResource("3_4eo5p")])

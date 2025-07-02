@@ -1,5 +1,6 @@
 extends Control
 
+class_name TowerInventory
 
 @export var inventory_item_scene: PackedScene
 @export var available_towers: Array[PackedScene] = []
@@ -21,9 +22,8 @@ func setup_container():
 	container.columns = number_of_columns
 
 func setup_toggle_button():
-	toggle_button.text = "Hide Inventory"
 	toggle_button.connect("pressed", _on_toggle_button_pressed)
-
+	
 func create_inventory_items():
 	for tower_scene in available_towers:
 		var item_button = create_inventory_item(tower_scene)
@@ -46,15 +46,13 @@ func get_inventory_texture_from_entity(entity: Node) -> Texture2D:
 			return child.get_inventory_sprite_texture()
 	return null
 
+func toggle_inventory_visibility():
+	inventory_visible = !inventory_visible
+	container.visible = inventory_visible
+	toggle_button.text = "Hide Inventory" if inventory_visible else "Show Inventory"
 
 func _on_tower_selected(tower_scene: PackedScene):
 	emit_signal("tower_selected", tower_scene)
 
 func _on_toggle_button_pressed():
 	toggle_inventory_visibility()
-
-
-func toggle_inventory_visibility():
-	inventory_visible = !inventory_visible
-	container.visible = inventory_visible
-	toggle_button.text = "Hide Inventory" if inventory_visible else "Show Inventory"

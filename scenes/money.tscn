@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://0i50wrimpkts"]
 
-[ext_resource type="Script" uid="uid://dw8u7fhybobla" path="res://scripts/Money/money_logic.gd" id="1_7xgx0"]
+[ext_resource type="Script" uid="uid://dw8u7fhybobla" path="res://scripts/Classes/Money/money_logic.gd" id="1_7xgx0"]
 [ext_resource type="PackedScene" uid="uid://cklk72vmetfhd" path="res://scenes/money_graphics.tscn" id="2_6q70k"]
-[ext_resource type="Script" uid="uid://sai6ggwojmu5" path="res://scripts/Money/money_graphics.gd" id="2_7xgx0"]
+[ext_resource type="Script" uid="uid://sai6ggwojmu5" path="res://scripts/Classes/Money/money_graphics.gd" id="2_7xgx0"]
 
 [node name="Money" type="Control"]
 layout_mode = 3

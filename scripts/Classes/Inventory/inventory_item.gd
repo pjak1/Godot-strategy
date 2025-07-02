@@ -14,7 +14,6 @@ signal pressed(item_data)
 
 var item_data: Variant
 var hovered := false
-var cached_bounds: Rect2 = Rect2(Vector2.ZERO, minimal_item_size)
 var cost = 0
 
 func _ready():

@@ -27,6 +27,9 @@ func remove_life(amount: int = 1):
 	if current_lives <= 0:
 		notify_game_over()
 
+func get_remaining_lives() -> int:
+	return current_lives
+
 func notify_game_over():
 	emit_signal("game_over")
 

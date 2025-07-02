@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cnericrje62b1"]
 
-[ext_resource type="Script" uid="uid://b8r7e6oeoyf7b" path="res://scripts/PlayerHealth/player_health_logic.gd" id="1_rnjbn"]
-[ext_resource type="Script" uid="uid://c5wuhdfwp3hod" path="res://scripts/PlayerHealth/player_health_graphics.gd" id="2_iajie"]
+[ext_resource type="Script" uid="uid://b8r7e6oeoyf7b" path="res://scripts/Classes/PlayerHealth/player_health_logic.gd" id="1_rnjbn"]
+[ext_resource type="Script" uid="uid://c5wuhdfwp3hod" path="res://scripts/Classes/PlayerHealth/player_health_graphics.gd" id="2_iajie"]
 
 [node name="PlayerHealth" type="Node2D"]
 script = ExtResource("1_rnjbn")
@@ -9,11 +9,14 @@ script = ExtResource("1_rnjbn")
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
+theme_override_constants/separation = 20
 script = ExtResource("2_iajie")
 
 [node name="Text" type="Label" parent="HBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 50
 text = "Lives:"
 
 [node name="Label" type="Label" parent="HBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 50

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://duwedlfq7l1el"]
 
-[ext_resource type="Script" uid="uid://caklshrsl13ay" path="res://scripts/Turret/turret_logic.gd" id="1_leld1"]
+[ext_resource type="Script" uid="uid://caklshrsl13ay" path="res://scripts/Classes/Turret/turret_logic.gd" id="1_leld1"]
 [ext_resource type="PackedScene" uid="uid://kclesjystjmr" path="res://scenes/small_turret_graphics.tscn" id="2_leld1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pp6j5"]
@@ -9,6 +9,7 @@ height = 45.0
 
 [node name="Area2D" type="Area2D"]
 script = ExtResource("1_leld1")
+damage = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = 1

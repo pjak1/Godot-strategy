@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cha80n4nys568"]
+[gd_scene load_steps=3 format=3 uid="uid://cha80n4nys568"]
 
-[ext_resource type="Script" uid="uid://dp6yr4k6547l6" path="res://scripts/Inventory/tower_inventory.gd" id="1_e2s50"]
+[ext_resource type="Script" uid="uid://dp6yr4k6547l6" path="res://scripts/Classes/Inventory/tower_inventory.gd" id="1_e2s50"]
+[ext_resource type="Script" uid="uid://bui1s73gdjx8w" path="res://scripts/UI/styled_button.gd" id="2_hrsc1"]
 
 [node name="TowerInventory" type="Control"]
 z_index = 100
@@ -19,8 +20,12 @@ theme_override_constants/separation = 40
 [node name="Button" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "Show Inventory"
+script = ExtResource("2_hrsc1")
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/h_separation = 50
 theme_override_constants/v_separation = 50
