@@ -5,8 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://drsf0cfc0tfjd" path="res://scenes/spawnpoint.tscn" id="3_lbhrr"]
 [ext_resource type="TileSet" uid="uid://cm6ji3vk54vlq" path="res://assets/Tilesheet/game.tres" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://38327qepamfd" path="res://scenes/enemy.tscn" id="4_lbhrr"]
-[ext_resource type="Resource" uid="uid://dhetm6dyfjaq0" path="res://data/WaveSets/standard_wave_set.tres" id="5_trtic"]
-[ext_resource type="Resource" uid="uid://cl45ls711auh0" path="res://data/WaveSets/hard_wave_set.tres" id="6_5newe"]
+[ext_resource type="Resource" uid="uid://c64om150lofdc" path="res://data/WaveSets/debug_wave_set.tres" id="5_5newe"]
 [ext_resource type="PackedScene" uid="uid://cha80n4nys568" path="res://scenes/tower_inventory.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://bj7bvanf1l8ob" path="res://scenes/inventory_item.tscn" id="7_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://duwedlfq7l1el" path="res://scenes/small_turret.tscn" id="8_gee14"]
@@ -21,6 +20,7 @@
 [ext_resource type="Script" uid="uid://dutoogcitifll" path="res://scripts/Classes/BoundsValidator/bounds_validator.gd" id="18_ssvqc"]
 [ext_resource type="PackedScene" uid="uid://cnericrje62b1" path="res://scenes/player_health.tscn" id="19_264po"]
 [ext_resource type="PackedScene" uid="uid://dwdfbmic1v7cx" path="res://scenes/end_game_menu.tscn" id="20_1kice"]
+[ext_resource type="PackedScene" uid="uid://di70qcy5eo4wg" path="res://scenes/victory_popup.tscn" id="22_37s47"]
 
 [sub_resource type="Curve2D" id="Curve2D_lnu2h"]
 _data = {
@@ -55,12 +55,12 @@ zoom = Vector2(0.5, 0.5)
 [node name="Spawnpoint" parent="." groups=["SpawnPoint"] instance=ExtResource("3_lbhrr")]
 position = Vector2(-1701, 1258)
 enemy_logic_scene = ExtResource("4_lbhrr")
-wave_set = ExtResource("5_trtic")
+wave_set = ExtResource("5_5newe")
 
 [node name="Spawnpoint2" parent="." groups=["SpawnPoint"] instance=ExtResource("3_lbhrr")]
 position = Vector2(-2247, -459)
 enemy_logic_scene = ExtResource("4_lbhrr")
-wave_set = ExtResource("6_5newe")
+wave_set = ExtResource("5_5newe")
 
 [node name="TowerInventory" parent="." instance=ExtResource("6_p57ef")]
 offset_left = -1855.0
@@ -118,3 +118,14 @@ offset_top = -107.0
 offset_right = -185.0
 offset_bottom = -107.0
 scale = Vector2(1.08, 1.08)
+
+[node name="VictoryPopup" parent="." instance=ExtResource("22_37s47")]
+visible = false
+offset_left = -183.0
+offset_top = -450.0
+offset_right = -183.0
+offset_bottom = -450.0
+money_path = NodePath("../Money")
+lives_path = NodePath("../PlayerHealth")
+wave_manager_path = NodePath("../WaveManager")
+end_game_menu_path = NodePath("../EndGameMenu")

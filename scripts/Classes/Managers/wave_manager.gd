@@ -9,9 +9,11 @@ var active_spawners: Array[Spawner] = []
 var finished_spawners: int = 0
 var all_waves_finished: bool = false
 var number_of_waves: int = 0
+var enemies_alive : int = 0
 
 signal all_waves_started(waves_remaining: int)
 signal all_waves_completed
+signal last_enemy_killed
 
 func _ready():
 	initialize_spawners()
@@ -32,6 +34,8 @@ func initialize_spawners():
 			
 			active_spawners.append(spawner)
 			spawner.connect("wave_finished", _on_spawner_wave_finished)
+			spawner.enemy_spawned.connect(_on_enemy_spawned)
+			spawner.enemy_killed.connect(_on_enemy_killed)
 
 func start_next_wave():
 	if all_waves_finished:
@@ -54,6 +58,15 @@ func _on_spawner_wave_finished():
 		else:
 			start_next_wave()
 
+func _on_enemy_spawned(_enemy: EnemyLogic):
+	enemies_alive += 1
+
+func _on_enemy_killed():
+	enemies_alive -= 1
+	
+	if enemies_alive == 0:
+		notify_last_enemy_killed()
+
 func is_last_wave() -> bool:
 	for spawner in active_spawners:
 		if spawner.wave_index < spawner.wave_set.waves.size():
@@ -65,3 +78,6 @@ func notify_all_waves_completed():
 	
 func notify_all_waves_started():
 	emit_signal("all_waves_started", number_of_waves - current_wave_index)
+
+func notify_last_enemy_killed():
+	emit_signal("last_enemy_killed")

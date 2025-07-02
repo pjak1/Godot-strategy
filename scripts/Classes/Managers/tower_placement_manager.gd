@@ -37,7 +37,7 @@ func update_position(pos: Vector2):
 
 
 func confirm(pos: Vector2):
-	if not validator.is_position_valid(pos):
+	if not validator.is_position_valid(pos) or tower_to_place == null:
 		return false
 
 	tower_to_place.global_position = pos

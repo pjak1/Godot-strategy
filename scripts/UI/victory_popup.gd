@@ -1,21 +1,44 @@
 extends Control
 
-@export var money_node: NodePath
-@export var lives_node: NodePath
+@export var money_path: NodePath
+@export var lives_path: NodePath
+@export var wave_manager_path: NodePath
+@export var end_game_menu_path: NodePath
 
-@onready var money_label: Label = $MoneyLabel
-@onready var lives_label: Label = $LivesLabel
-@onready var money = get_node(money_node)
-@onready var lives = get_node(lives_node)
+@onready var money_stat: StatsDisplay = $VBoxContainer/MoneyLeft
+@onready var lives_stat: StatsDisplay = $VBoxContainer/LivesLeft
+
+@onready var money = get_node(money_path)
+@onready var lives = get_node(lives_path)
+@onready var wave_manager = get_node(wave_manager_path)
+@onready var end_game_menu = get_node(end_game_menu_path)
+
+var is_last_wave: bool = false
+var is_last_enemy_killed: bool = false
 
 func _ready():
-	hide()  # skryté do konce hry
+	wave_manager.all_waves_completed.connect(_on_last_wave)
+	wave_manager.last_enemy_killed.connect(_on_last_enemy_killed)
 
 func show_victory_screen():
 	var current_money = money.get_current_money()
 	var current_lives = lives.get_remaining_lives()
 
-	money_label.text = "Zbývající peníze: %d" % current_money
-	lives_label.text = "Zbývající životy: %d" % current_lives
+	money_stat.set_value(current_money)
+	lives_stat.set_value(current_lives)
 
 	show()
+
+func victory():
+	show_victory_screen()
+	get_tree().paused = true
+	end_game_menu.show()
+
+func _on_last_enemy_killed():
+	is_last_enemy_killed = true
+	
+	if is_last_wave:
+		victory()
+
+func _on_last_wave():
+	is_last_wave = true
