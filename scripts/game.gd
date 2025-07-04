@@ -8,13 +8,15 @@ extends Node2D
 @onready var player_health := $PlayerHealth
 @onready var game_over_menu := $EndGameMenu
 
+signal reward_given
+
 func _ready():
 	tower_inventory.connect("tower_selected", _on_tower_selected)
 	enemies.connect("enemy_killed", _on_enemy_killed)
 	player_health.game_over.connect(_on_gameover)
 
 func _input(event):
-	if not placement.is_placing():
+	if not placement.is_placing() or placement.tower_to_place == null or not placement.ready_for_confirm:
 		return
 
 	if event is InputEventMouseMotion:
@@ -25,8 +27,10 @@ func _input(event):
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			placement.cancel()
 
+
 func _on_tower_selected(scene: PackedScene):
-	placement.start_placing(scene)
+	if not placement.is_now_placing:
+		placement.start_placing(scene)
 
 func _on_enemy_killed(enemy: EnemyLogic, attacker:Entity):
 	if attacker:

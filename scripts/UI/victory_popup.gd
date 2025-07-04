@@ -14,7 +14,6 @@ extends Control
 @onready var end_game_menu = get_node(end_game_menu_path)
 
 var is_last_wave: bool = false
-var is_last_enemy_killed: bool = false
 
 func _ready():
 	wave_manager.all_waves_completed.connect(_on_last_wave)
@@ -23,7 +22,7 @@ func _ready():
 func show_victory_screen():
 	var current_money = money.get_current_money()
 	var current_lives = lives.get_remaining_lives()
-
+	
 	money_stat.set_value(current_money)
 	lives_stat.set_value(current_lives)
 
@@ -31,14 +30,13 @@ func show_victory_screen():
 
 func victory():
 	show_victory_screen()
-	get_tree().paused = true
 	end_game_menu.show()
+	
+	get_tree().paused = true
 
 func _on_last_enemy_killed():
-	is_last_enemy_killed = true
-	
 	if is_last_wave:
-		victory()
+		call_deferred("victory")
 
 func _on_last_wave():
 	is_last_wave = true

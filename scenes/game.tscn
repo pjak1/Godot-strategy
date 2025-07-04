@@ -94,8 +94,8 @@ script = ExtResource("13_ca42v")
 [node name="TowerPlacementManager" parent="." instance=ExtResource("11_rysoc")]
 money_path = NodePath("../Money")
 tower_manager_path = NodePath("../TowerManager")
-bounds_validator = NodePath("../BoundsValidator")
-path_manager = NodePath("../PathManager")
+bounds_validator_path = NodePath("../BoundsValidator")
+path_manager_path = NodePath("../PathManager")
 
 [node name="WaveCounter" parent="." node_paths=PackedStringArray("wave_manager") instance=ExtResource("16_ca42v")]
 position = Vector2(-92, -1065)

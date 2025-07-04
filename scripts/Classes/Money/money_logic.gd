@@ -18,5 +18,5 @@ func spend_money(amount: int) -> bool:
 	else:
 		return false
 
-func get_current_money():
+func get_current_money() -> int:
 	return money_amount
