@@ -2,9 +2,13 @@ extends Node
 
 class_name MoneyLogic
 
+# === Exported Variables ===
 @export var money_amount: int = 100
 
+# === Signals ===
 signal money_changed(new_amount: int)
+
+# === Public Methods ===
 
 func add_money(amount: int) -> void:
 	money_amount += amount

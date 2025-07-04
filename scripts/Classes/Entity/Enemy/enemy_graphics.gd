@@ -6,7 +6,7 @@ class_name EnemyGraphics
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var enemy_logic: EnemyLogic = get_parent()
 
-func _ready():
+func _ready() -> void:
 	super._ready()
 	# Initialize sprite animation based on logic's type
 	if enemy_logic.type:

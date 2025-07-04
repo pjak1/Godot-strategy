@@ -2,17 +2,21 @@ extends Node
 
 class_name StatsDisplay
 
-@export var stat_name : String
+# === Exported Variables ===
+@export var stat_name: String
 
-@onready var text : Label = $Text
-@onready var value : Label = $Value
+# === Onready Variables ===
+@onready var text: Label = $Text
+@onready var value: Label = $Value
 
-func _ready():
+# === Lifecycle ===
+func _ready() -> void:
 	set_text(stat_name)
 	set_value(0)
 
-func set_value(new_value: int):
+# === Public Methods ===
+func set_value(new_value: int) -> void:
 	value.text = str(new_value)
 
-func set_text(new_text: String):
+func set_text(new_text: String) -> void:
 	text.text = new_text

@@ -2,32 +2,39 @@ extends Node2D
 
 class_name Spawner
 
+# === Exported Variables ===
 @export var enemy_logic_scene: PackedScene
 @export var wave_set: WaveSet
 
+# === Runtime Variables ===
 var spawn_interval: float = 5.0
-var spawn_timer := 0.0
-var wave_enemies_remaining = -1
-var wave_index = 0
-var number_of_waves = 0
+var spawn_timer: float = 0.0
+var wave_enemies_remaining: int = -1
+var wave_index: int = 0
+var number_of_waves: int = 0
 var enemy_data: EnemyData = null
-var wave_already_finished := false
+var wave_already_finished: bool = false
 
+# === Signals ===
 signal enemy_spawned
 signal wave_started
 signal wave_finished
 signal enemy_killed
 
-func _ready():
+# === Lifecycle ===
+
+func _ready() -> void:
 	number_of_waves = wave_set.waves.size()
 
-func _process(delta):
+func _process(delta: float) -> void:
 	update_spawn_timer(delta)
 	handle_spawning()
-	
+
 	if wave_enemies_remaining == 0 and not wave_already_finished:
 		wave_already_finished = true
 		notify_wave_finished()
+
+# === Public Methods ===
 
 func update_spawn_timer(delta: float) -> void:
 	spawn_timer += delta
@@ -47,17 +54,17 @@ func spawn_enemy() -> void:
 		return
 
 	var enemy = create_enemy()
-	
+
 	prepare_enemy(enemy)
 	deploy_enemy(enemy)
 	notify_enemy_spawned(enemy)
 
 func create_enemy() -> EnemyLogic:
 	var enemy: EnemyLogic = enemy_logic_scene.instantiate()
-	
+
 	enemy.initialize(enemy_data)
 	enemy.global_position = global_position
-	enemy.connect("died", _on_enemy_died)
+	enemy.connect("died", Callable(self, "_on_enemy_died"))
 	return enemy
 
 func prepare_enemy(enemy: EnemyLogic) -> void:
@@ -85,7 +92,7 @@ func find_closest_path_points(position: Vector2) -> Array[Vector2]:
 			continue
 
 		var curve = path.curve
-		
+
 		if curve.get_point_count() == 0:
 			continue
 
@@ -105,29 +112,33 @@ func get_path_global_points(path: Path2D) -> Array[Vector2]:
 
 	return points
 
-func start_wave():
+func start_wave() -> void:
 	if wave_index >= number_of_waves:
 		return
-		
+
 	var current_wave: Wave = wave_set.waves[wave_index]
 	wave_already_finished = false
-	
+
 	notify_wave_started()
-	
+
 	spawn_timer = current_wave.interval
 	enemy_data = current_wave.enemy_data
 	wave_enemies_remaining = current_wave.count
 	wave_index += 1
 
-func notify_wave_finished():
+# === Signal Notifiers ===
+
+func notify_wave_finished() -> void:
 	emit_signal("wave_finished")
-	
-func notify_wave_started():
+
+func notify_wave_started() -> void:
 	emit_signal("wave_started", wave_index)
-	
-func notify_enemy_killed():
+
+func notify_enemy_killed() -> void:
 	emit_signal("enemy_killed")
 
-func _on_enemy_died(enemy: EnemyLogic, attacker: Entity):
+# === Signal Handlers ===
+
+func _on_enemy_died(enemy: EnemyLogic, attacker: Entity) -> void:
 	wave_enemies_remaining -= 1
 	notify_enemy_killed()

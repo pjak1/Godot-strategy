@@ -2,26 +2,30 @@ extends Button
 
 class_name StyledButton
 
+# === Exported Variables ===
 @export var default_color: Color = Color(0.2, 0.2, 0.2)
 @export var hover_color: Color = Color(0.4, 0.4, 0.4)
 @export var corner_radius: int = 12
-@export var margin_left := 8
-@export var margin_right := 8
-@export var margin_top := 4
-@export var margin_bottom := 4
+@export var margin_left: int = 8
+@export var margin_right: int = 8
+@export var margin_top: int = 4
+@export var margin_bottom: int = 4
 
-func _ready():
+# === Lifecycle ===
+func _ready() -> void:
 	apply_style(default_color)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
-func _on_mouse_entered():
+# === Signal Handlers ===
+func _on_mouse_entered() -> void:
 	apply_style(hover_color)
 
-func _on_mouse_exited():
+func _on_mouse_exited() -> void:
 	apply_style(default_color)
 
-func apply_style(color: Color):
+# === Private Methods ===
+func apply_style(color: Color) -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.bg_color = color
 

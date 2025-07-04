@@ -2,6 +2,7 @@ extends Entity
 
 class_name TurretLogic
 
+# === Exported Variables ===
 @export var rate_of_fire: float = 1.0
 @export var range: float = 1000.0
 @export var enable_targeting: bool = true
@@ -9,44 +10,50 @@ class_name TurretLogic
 @export var targeted_groups: Array[String] = ["Enemy"]
 @export var cost: int = 100
 
+# === Runtime Variables ===
 var fire_cooldown: float = 0.0
 var current_target: Node2D = null
 var barrel_angle: float = 0.0
-var fire_threshold := 0.15
+var fire_threshold: float = 0.15
 
+# === Signals ===
 signal target_angle_changed(new_angle: float)
 signal fire(target_position: Vector2)
 signal range_changed(new_range: float)
 signal placement_state_changed(state: String)
 
-func _ready():
+# === Lifecycle ===
+
+func _ready() -> void:
 	super._ready()
 	fire_cooldown = 0.0
 	emit_signal("range_changed", range)
 
-func _process(delta):
+func _process(delta: float) -> void:
 	update_fire_cooldown(delta)
 	if enable_targeting:
 		handle_targeting()
 
+# === Public Methods ===
+
 func update_fire_cooldown(delta: float) -> void:
 	fire_cooldown = max(fire_cooldown - delta, 0.0)
 
-func handle_targeting():
+func handle_targeting() -> void:
 	current_target = find_nearest_enemy()
 	if current_target:
 		handle_target_found()
 	else:
 		handle_no_target()
 
-func handle_target_found():
+func handle_target_found() -> void:
 	var angle_to_target = compute_target_angle(current_target.global_position)
 	emit_signal("target_angle_changed", angle_to_target)
 
 	if is_barrel_aligned(angle_to_target) and can_fire():
 		fire_at_target()
 
-func handle_no_target():
+func handle_no_target() -> void:
 	var idle_angle = deg_to_rad(angle_offset_deg)
 	emit_signal("target_angle_changed", idle_angle)
 
@@ -61,14 +68,14 @@ func is_barrel_aligned(target_angle: float) -> bool:
 func can_fire() -> bool:
 	return fire_cooldown <= 0.0
 
-func fire_at_target():
+func fire_at_target() -> void:
 	emit_signal("fire", current_target.global_position)
 	deal_damage(current_target)
 	fire_cooldown = 1.0 / rate_of_fire
 
 func find_nearest_enemy() -> Node2D:
 	var nearest: Node2D = null
-	var shortest := INF
+	var shortest: float = INF
 
 	for group in targeted_groups:
 		for enemy in get_tree().get_nodes_in_group(group):
@@ -82,7 +89,7 @@ func find_nearest_enemy() -> Node2D:
 
 	return nearest
 
-func update_barrel_angle(angle: float):
+func update_barrel_angle(angle: float) -> void:
 	barrel_angle = angle
 
 func angle_wrap(angle: float) -> float:
@@ -92,8 +99,8 @@ func angle_wrap(angle: float) -> float:
 		angle += TAU
 	return angle
 
-func set_placement_state(state_or_valid):
-	var state := ""
+func set_placement_state(state_or_valid) -> void:
+	var state: String = ""
 
 	if typeof(state_or_valid) == TYPE_BOOL:
 		state = "valid" if state_or_valid else "invalid"
