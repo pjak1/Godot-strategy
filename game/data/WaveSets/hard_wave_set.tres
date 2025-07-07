@@ -7,4 +7,4 @@
 
 [resource]
 script = ExtResource("1_sroku")
-waves = Array[ExtResource("2_cq6dr")]([ExtResource("3_4eo5p"), ExtResource("4_uatr5"), ExtResource("3_4eo5p")])
+waves = Array[ExtResource("2_cq6dr")]([ExtResource("3_4eo5p"), ExtResource("4_uatr5"), ExtResource("4_uatr5")])

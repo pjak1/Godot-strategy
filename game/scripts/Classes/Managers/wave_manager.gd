@@ -78,8 +78,12 @@ func _on_enemy_spawned(_enemy: EnemyLogic) -> void:
 	enemies_alive += 1
 
 func _on_enemy_killed() -> void:
+	if enemies_alive <= 0:
+		push_warning("WaveManager: enemy_killed called but enemies_alive is already 0")
+		return
+
 	enemies_alive -= 1
-	
+
 	if enemies_alive == 0:
 		notify_last_enemy_killed()
 		
