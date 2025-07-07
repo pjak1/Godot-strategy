@@ -2,6 +2,21 @@ extends EntityGraphics
 
 class_name TurretGraphics
 
+# === Color Constants ===
+
+# Semi-transparent white – used for preview when placement is valid
+const COLOR_VALID_PREVIEW := Color(1, 1, 1, 0.5)
+
+# Semi-transparent red – used for preview when placement is invalid
+const COLOR_INVALID_PREVIEW := Color(1, 0.3, 0.3, 0.7)
+
+# Fully opaque white – used after confirming turret placement
+const COLOR_CONFIRMED := Color(1, 1, 1)
+
+# Transparent red – used for debug drawing of turret range
+const COLOR_DEBUG_RANGE := Color(1, 0, 0, 0.25)
+
+
 # === Exported Variables ===
 @export var rotation_speed: float = 5.0
 @export var show_range_debug: bool = false
@@ -37,14 +52,14 @@ func set_range_debug(enabled: bool) -> void:
 	show_range_debug = enabled
 
 func show_valid_preview() -> void:
-	modulate = Color(1, 1, 1, 0.5)
+	modulate = COLOR_VALID_PREVIEW
 	set_range_debug(true)
 
 func show_invalid_preview() -> void:
-	modulate = Color(1, 0.3, 0.3, 0.7)
+	modulate = COLOR_INVALID_PREVIEW
 
 func confirm_placement() -> void:
-	modulate = Color(1, 1, 1)
+	modulate = COLOR_CONFIRMED
 	set_range_debug(false)
 
 # === Private Methods ===
@@ -72,7 +87,7 @@ func update_barrel_rotation(delta: float) -> void:
 	turret_barrel.rotation = lerp_angle(turret_barrel.rotation, target_angle, rotation_speed * delta)
 
 func draw_debug_range() -> void:
-	draw_circle(turret_barrel.position, range_radius, Color(1, 0, 0, 0.25))
+	draw_circle(turret_barrel.position, range_radius, COLOR_DEBUG_RANGE)
 
 func notify_logic_about_barrel_rotation() -> void:
 	var turret_logic = owner as TurretLogic
